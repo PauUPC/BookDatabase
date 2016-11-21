@@ -1,0 +1,32 @@
+P2 - Administració de llibres
+
+L’esquelet d’aquesta pràctica permet gestionar una base de dades de llibres (altes, baixes, modificacions i
+consultes). La interfície és molt bàsica i no facilita la seva gestió.
+La base de dades està composta per una única taula amb els camps següents:
+Títol, Autor, Any de publicació, Editorial, Categoria (Acció i aventura, Biografia, Fantasia, ...),
+Valoració personal (molt bo, bo, regular, dolent, molt dolent).
+Inicialment l’aplicació s’ha d’engegar amb la informació ja introduïda de quatre llibres amb les seves
+respectives dades.
+
+Tasques principals:
+• Fer una pantalla de visualització de totes les dades amb RecyclerView amb els llibres ordenats per
+categoria.
+
+• Fer una pantalla per donar d’alta elements de la base de dades.
+
+• Afegir un procediment d’esborrat que es pugui accedir des de la llista d’elements de l’aplicació o bé
+des d’una cerca per títol.
+
+• Procediment per modificar la valoració personal.
+
+• Fer el help de l’aplicació.
+
+• Fer l’about.
+
+Bloc de tasques comuns:
+• Fer un menú de l’aplicació transformant la vista inicial en una Navigation Drawer Activity. La vista
+principal ha de ser una vista amb la llista de títols dels llibres ordenada per títol.
+
+• Fer una visualització que permeti cercar i mostrar els títols dels llibres per autor.
+Per a la realització de les tasques que cadascú té assignades no és necessari modificar el disseny de la base
+de dades de l’esquelet.

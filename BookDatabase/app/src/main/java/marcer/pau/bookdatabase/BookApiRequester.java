@@ -6,17 +6,39 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import android.app.Activity;
+import android.content.Context;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class BookApiRequester {
 
-    public interface BookApiRequesterResponse {
-        void receivedNewBook();//TODO: pass book
-    }
-
-    private static final String API_BASE_URL = "http://openlibrary.org/";
     private AsyncHttpClient client;
+    private BookApiRequesterResponse bookApiRequesterResponse;
+    private boolean fetching = false;
+    private static final String API_BASE_URL = "http://openlibrary.org/";
+
+    public interface BookApiRequesterResponse {
+        void receivedNewBook(Book book);
+    }
 
     public BookApiRequester() {
         this.client = new AsyncHttpClient();
+    }
+
+    public boolean isFetchingData() {
+        return fetching;
     }
 
     private String getApiUrl(String relativeUrl) {

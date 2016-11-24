@@ -4,25 +4,24 @@ import android.content.Context;
 
 import org.json.JSONObject;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
     private String Title;
     private String author;
     private String publishedDate;
     private String imagePath;
-    private Context context;
     //private BookImageHandler bookImageHandler;
 
-    public Book(Context context, String title, String author, String publishDate){
+    public Book(String title, String author, String publishDate){
         //bookImageHandler = new BookImageHandler(context);
-        this.context = context;
         this.Title = title;
         this.author = author;
         this. publishedDate = publishDate;
         this.imagePath = null;
     }
 
-    public Book(Context context, JSONObject jsonObject){
-        this.context = context;
+    public Book(JSONObject jsonObject){
     }
 
     public String getTitle() {

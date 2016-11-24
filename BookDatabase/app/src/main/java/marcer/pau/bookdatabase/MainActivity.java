@@ -1,5 +1,7 @@
 package marcer.pau.bookdatabase;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -89,6 +92,10 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.menu_change_layout) {
             changeLayoutManager(item);
+        }
+        else if (id == R.id.menu_add_book) {
+            Intent intent = new Intent(this, NewBook.class);
+            startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

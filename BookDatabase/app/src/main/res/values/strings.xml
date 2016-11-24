@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">BookDatabase</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="api_key">GpYj4awfNwkcEm6prgRnho6mE7FqIrXD8uqBbTT0</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="change_layout_manager">Change Layout</string>
+    <string name="action_search">search</string>
+    <string name="layout">Layout</string>
+    <string name="grid">Grid</string>
+    <string name="filter">Filter</string>
+    <string name="view_all">View all</string>
+    <string name="sort_by">Sort by</string>
+</resources>

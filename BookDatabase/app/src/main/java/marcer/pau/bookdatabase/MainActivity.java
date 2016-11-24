@@ -79,23 +79,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_change_recycler_manager) {
-            changeLayoutManager();
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.add_book) {
-            //
+        if (id == R.id.menu_change_layout) {
+            changeLayoutManager(item);
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -180,14 +174,18 @@ public class MainActivity extends AppCompatActivity
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
-    private void changeLayoutManager() {
+    private void changeLayoutManager(MenuItem item) {
         if (mRecyclerView.getLayoutManager().equals(mLinearLayoutManager)) {
             mRecyclerView.setLayoutManager(mGridLayoutManager);
             if (mPhotosList.size() == 1) {
                 requestPhoto();
             }
+            item.setIcon(getResources().getDrawable(R.drawable.ic_menu_view_list_black_24dp));
+            item.setTitle(R.string.menu_layout_list);
         } else {
             mRecyclerView.setLayoutManager(mLinearLayoutManager);
+            item.setIcon(getResources().getDrawable(R.drawable.ic_menu_view_grid_black_24dp));
+            item.setTitle(R.string.menu_layout_grid);
         }
     }
 

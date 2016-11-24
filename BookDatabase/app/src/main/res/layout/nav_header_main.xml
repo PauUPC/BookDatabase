@@ -13,24 +13,22 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/main_imageHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+        app:srcCompat="@drawable/ic_book_launcher_black" />
+    <!--<div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a
+    href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a
+    href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0"
+    target="_blank">CC 3.0 BY</a></div>-->
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Android Studio"
+        android:text="BookDatabase"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:id="@+id/textView2" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="android.studio@android.com" />
 
 </LinearLayout>

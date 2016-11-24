@@ -10,9 +10,8 @@
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="change_layout_manager">Change Layout</string>
-    <string name="action_search">search</string>
-    <string name="layout">Layout</string>
-    <string name="filter">Filter</string>
-    <string name="view_all">View all</string>
+    <string name="header_action_search">search</string>
+    <string name="menu_layout">Layout</string>
+    <string name="menu_filter">Filter</string>
     <string name="sort_by">Sort by</string>
 </resources>

@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Menu">
+    <item android:title="@string/menu_menu">
         <menu>
-        <item android:title="Add Book"
+        <item android:title="@string/menu_add_book"
             android:id="@+id/menu_add_book"
             android:icon="@drawable/ic_menu_add_black_24dp"/>
 
-        <item android:title="@string/filter"
-            android:id="@+id/menu_select_filter" />
+        <item android:title="@string/menu_filter"
+            android:id="@+id/menu_select_filter"
+            android:icon="@drawable/ic_menu_filter"/>
 
         <item android:title="@string/sort_by"
-            android:id="@+id/menu_select_sort" />
+            android:id="@+id/menu_select_sort"
+            android:icon="@drawable/ic_menu_sort_by"/>
         </menu>
     </item>
 
-    <item android:title="@string/layout">
+    <item android:title="@string/menu_layout">
         <menu>
             <item
                 android:id="@+id/menu_change_layout"
                 android:icon="@drawable/ic_menu_view_grid_black_24dp"
-                android:title="@string/grid" />
+                android:title="@string/menu_layout_grid" />
         </menu>
     </item>
 
-    <item android:title="Extras">
+    <item android:title="@string/menu_extras">
         <menu>
-            <item android:title="Help"
+            <item android:title="@string/menu_help"
                 android:id="@+id/menu_help"
-                android:icon="@drawable/" />
+                android:icon="@drawable/ic_menu_help_black_24dp" />
 
-            <item android:title="About"
+            <item android:title="@string/menu_about"
                 android:id="@+id/menu_about"
                 android:icon="@drawable/ic_menu_info_black_24dp" />
         </menu>

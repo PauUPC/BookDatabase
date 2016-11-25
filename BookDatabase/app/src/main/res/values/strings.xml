@@ -30,4 +30,6 @@
     <string name="isbn">isbn, only numbers</string>
     <string name="enter_the_book_manually">Enter the book manually</string>
     <string name="or">Or</string>
+    <string name="add">Add</string>
+    <string name="cancel">cancel</string>
 </resources>

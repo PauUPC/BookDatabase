@@ -68,7 +68,7 @@ public class NewBookForm extends AppCompatActivity {
         imageView.setImageDrawable(drawable);
 
         if(book != null) {
-            title.setText(book.getAuthor());
+            title.setText(book.getTitle());
             author.setText(book.getAuthor());
         }
         //TODO: set button listeners

@@ -35,8 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="UselessParent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
 
             <TextView
                 android:text="@string/please_provide_the_isbn_code"
@@ -46,16 +46,28 @@
                 android:textAppearance="@android:style/TextAppearance.Material.Large"
                 android:textAlignment="center" />
 
-            <EditText
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/addbook_input_isbn"
-                android:hint="@string/isbn"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:maxLength="13" />
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/addbook_input_isbn"
+                    android:hint="@string/isbn"
+                    android:maxLines="1"
+                    android:maxLength="13"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:text="@string/add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/addbook_input_button_submit" />
+            </LinearLayout>
 
             <ProgressBar
                 style="?android:attr/progressBarStyle"
@@ -86,7 +98,15 @@
                 android:text="@string/enter_the_book_manually"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/addbook_input_button" />
+                android:id="@+id/addbook_input_button_manual" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="isbn: 9788448039806"
+                android:ems="10"
+                android:id="@+id/editText" />
 
         </LinearLayout>
 

@@ -1,13 +1,13 @@
 package marcer.pau.bookdatabase;
 
-import android.content.Context;
-
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 
 public class Book implements Serializable {
-    private String Title;
+    private String title;
     private String author;
     private String publishedDate;
     private String imagePath;
@@ -15,17 +15,34 @@ public class Book implements Serializable {
 
     public Book(String title, String author, String publishDate){
         //bookImageHandler = new BookImageHandler(context);
-        this.Title = title;
+        this.title = title;
         this.author = author;
-        this. publishedDate = publishDate;
+        this.publishedDate = publishDate;
         this.imagePath = null;
     }
 
     public Book(JSONObject jsonObject){
+        try {
+            JSONArray array = jsonObject.getJSONArray("items");
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject item = array.getJSONObject(i);
+
+                JSONObject volumeInfo = item.getJSONObject("volumeInfo");
+                this.title = volumeInfo.getString("title");
+
+                JSONArray authors = volumeInfo.getJSONArray("authors");
+                this.author = authors.getString(0);
+
+//                JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
+//                String imageLink = imageLinks.getString("smallThumbnail");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public String getAuthor() {

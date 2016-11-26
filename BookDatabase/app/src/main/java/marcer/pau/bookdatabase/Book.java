@@ -7,18 +7,27 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 public class Book implements Serializable {
+    private long id;
+    //TODO id managed by database autoincrement
     private String title;
     private String author;
     private String publishedDate;
+    private String publisher;
+    private String category;
+    private String personal_evaluation;
     private String imagePath;
     //private BookImageHandler bookImageHandler;
 
-    public Book(String title, String author, String publishDate){
-        //bookImageHandler = new BookImageHandler(context);
+    public Book(String title, String author, String publishedDate, String publisher,
+                String category, String personal_evaluation) {
         this.title = title;
         this.author = author;
-        this.publishedDate = publishDate;
+        this.publishedDate = publishedDate;
+        this.publisher = publisher;
+        this.category = category;
+        this.personal_evaluation = personal_evaluation;
         this.imagePath = null;
+        //bookImageHandler = new BookImageHandler(context);
     }
 
     public Book(JSONObject jsonObject){
@@ -41,6 +50,10 @@ public class Book implements Serializable {
         }
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -53,11 +66,26 @@ public class Book implements Serializable {
         return publishedDate;
     }
 
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getPersonal_evaluation() {
+        return personal_evaluation;
+    }
+
     public String getImagePath() {
         return imagePath;
     }
 
-
+    @Override
+    public String toString() {
+        return String.format("%s - %s", title, author);
+    }
 }
 
 //private class BookImageHandler {

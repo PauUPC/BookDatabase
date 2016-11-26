@@ -10,31 +10,32 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import static marcer.pau.bookdatabase.R.id.toolbar;
-
 
 public class NewBookForm extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private ImageView imageView;
+    private ImageView thumbnail;
     private EditText title;
     private EditText author;
+    private EditText publishedDate;
+    private EditText publisher;
+    private EditText category;
+    private EditText personal_evaluation;
+    private EditText imagePath;
     private Book book;
+    onNewBookAdded onNewBookAdded;
     private static final String BOOK_KEY = "BOOK";
 
-
+    public interface onNewBookAdded{
+        void needToUpdateView(Book book);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_book_form);
 
-        toolbar = (Toolbar) findViewById(R.id.menuadd_toolbar1);
-        toolbar.setTitle(R.string.menu_add_book);
-        toolbar.setNavigationIcon(R.drawable.ic_menuadd_clear_24dp);
-        setSupportActionBar(toolbar);
-
-        book = (Book) getIntent().getSerializableExtra(BOOK_KEY);
-
+        createToolbar();
+        createObjects();
         createListeners();
     }
 
@@ -54,18 +55,31 @@ public class NewBookForm extends AppCompatActivity {
                 return true;
             case R.id.menuaddform_action_forward:
                 Toast.makeText(getApplicationContext(), "forward pressed", Toast.LENGTH_SHORT).show();
+                saveBook();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    private void createToolbar(){
+        toolbar = (Toolbar) findViewById(R.id.menuadd_toolbar1);
+        toolbar.setTitle(R.string.menu_add_book);
+        toolbar.setNavigationIcon(R.drawable.ic_menuadd_clear_24dp);
+        setSupportActionBar(toolbar);
+        //TODO change forward icon
+    }
+
+    private void createObjects(){
+        book = (Book) getIntent().getSerializableExtra(BOOK_KEY);
+    }
+
     private void createListeners(){
         title = (EditText) findViewById(R.id.addbookform_title);
         author = (EditText) findViewById(R.id.addbookform_author);
-        imageView =(ImageView) findViewById(R.id.addbookform_img);
-        Drawable drawable = getResources().getDrawable(R.drawable.ic_no_preview_image);
-        imageView.setImageDrawable(drawable);
+        thumbnail =(ImageView) findViewById(R.id.addbookform_img);
+        Drawable drawable = getResources().getDrawable(R.mipmap.ic_no_image_available);
+        //thumbnail.setImageDrawable(drawable);
 
         if(book != null) {
             title.setText(book.getTitle());
@@ -73,4 +87,26 @@ public class NewBookForm extends AppCompatActivity {
         }
         //TODO: set button listeners
     }
+
+    private void saveBook(){
+        //TODO check if book is not full null
+        //extractBookFromForm();
+        saveToDB();
+        addToView();
+    }
+
+    private void saveToDB(){
+        //TODO add book to database
+    }
+
+    private void addToView(){
+        onNewBookAdded.needToUpdateView(book);
+    }
+
+//    private void extractBookFromForm(){
+//        book = new Book(
+//                title.getText().toString(),
+//                author.getText().toString(),
+//                );
+//    }
 }

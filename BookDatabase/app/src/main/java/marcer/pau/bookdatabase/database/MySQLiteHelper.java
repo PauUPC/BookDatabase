@@ -29,7 +29,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_YEAR + " integer, "
             + COLUMN_PUBLISHER + " text not null, "
             + COLUMN_CATEGORY + " text not null, "
-            + COLUMN_PERSONAL_EVALUATION + " text"
+            + COLUMN_PERSONAL_EVALUATION + " real"
             + COLUMN_THUMBNAIL_PATH + "text"
             + ");";
 

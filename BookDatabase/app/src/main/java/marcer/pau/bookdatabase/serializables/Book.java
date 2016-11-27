@@ -1,5 +1,7 @@
 package marcer.pau.bookdatabase.serializables;
 
+import android.graphics.drawable.Drawable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,8 +16,7 @@ public class Book implements Serializable {
     private String publishedDate;
     private String publisher;
     private String category;
-
-    private String personal_evaluation;
+    private float personal_evaluation;
     private String thumbnailPath;
     //private BookImageHandler bookImageHandler;
 
@@ -25,12 +26,12 @@ public class Book implements Serializable {
         this.publishedDate = "";
         this.publisher = "";
         this.category = "";
-        this.personal_evaluation = "";
+        this.personal_evaluation = 0;
         this.thumbnailPath = "";
     }
 
     public Book(String title, String author, String publishedDate, String publisher,
-                String category, String personal_evaluation, String thumbnailPath) {
+                String category, int personal_evaluation, String thumbnailPath) {
         this.title = title;
         this.author = author;
         this.publishedDate = publishedDate;
@@ -46,15 +47,17 @@ public class Book implements Serializable {
             JSONArray array = jsonObject.getJSONArray("items");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject item = array.getJSONObject(i);
-
                 JSONObject volumeInfo = item.getJSONObject("volumeInfo");
                 this.title = volumeInfo.getString("title");
-
                 JSONArray authors = volumeInfo.getJSONArray("authors");
                 this.author = authors.getString(0);
-
-//                JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-//                String imageLink = imageLinks.getString("smallThumbnail");
+                this.publishedDate = volumeInfo.getString("publishedDate");
+                JSONArray category = volumeInfo.getJSONArray("categories");
+                this.category = category.getString(0);
+                JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
+                this.thumbnailPath = imageLinks.getString("smallThumbnail");
+                this.personal_evaluation = 0;
+                this.publisher = "unknown";
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -89,7 +92,7 @@ public class Book implements Serializable {
         return category;
     }
 
-    public String getPersonal_evaluation() {
+    public float getPersonal_evaluation() {
         return personal_evaluation;
     }
 
@@ -101,6 +104,7 @@ public class Book implements Serializable {
     public String toString() {
         return String.format("%s - %s", title, author);
     }
+
 }
 
 //private class BookImageHandler {

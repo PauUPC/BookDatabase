@@ -84,7 +84,7 @@ public class BookData {
     }
 
     private Book cursorToBook(Cursor cursor) {
-        Book book = new Book(cursor.getString(1), cursor.getString(2), null, null, null, null, null);
+        Book book = new Book(cursor.getString(1), cursor.getString(2), null, null, null, 0, null);
         book.setID(cursor.getLong(0));
         return book;
     }

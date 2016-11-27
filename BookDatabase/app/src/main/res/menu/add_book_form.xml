@@ -4,7 +4,7 @@
 
     <item android:id="@+id/menuaddform_action_forward"
         android:title="Forward"
-        android:icon="@drawable/ic_menuadd_forward_24dp"
+        android:icon="@drawable/ic_check_black_24dp"
         app:showAsAction="ifRoom|collapseActionView" />
 
 </menu>

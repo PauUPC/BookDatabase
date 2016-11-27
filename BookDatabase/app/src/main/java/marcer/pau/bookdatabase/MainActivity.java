@@ -1,5 +1,6 @@
 package marcer.pau.bookdatabase;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,11 +17,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import marcer.pau.bookdatabase.newBook.NewBook;
+import marcer.pau.bookdatabase.newBook.NewBookForm;
+import marcer.pau.bookdatabase.serializables.Book;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ImageRequester.ImageRequesterResponse {
@@ -34,13 +38,18 @@ public class MainActivity extends AppCompatActivity
     private RecyclerAdapter mAdapter;
 
     private SearchView searchView;
+    //private BookData bookData;
+    private handleNewBook handleNewBook;
+    private final static int CODE_CHILD_NEW = 1;
+    private final static int CODE_CHILD_FORM = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initMenus();
-        initRecyclerview();
+        createMenus();
+        createObjects();
+        createRecyclerview();
     }
 
     @Override
@@ -94,8 +103,7 @@ public class MainActivity extends AppCompatActivity
             changeLayoutManager(item);
         }
         else if (id == R.id.menu_add_book) {
-            Intent intent = new Intent(this, NewBook.class);
-            startActivity(intent);
+            handleNewBook.startNewBook();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -110,7 +118,24 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void initMenus(){
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK && requestCode == CODE_CHILD_NEW) {
+            Book book = (Book) data.getExtras().getSerializable("BOOK");
+            handleNewBook.startNewBookForm(book);
+        }
+        if (resultCode==RESULT_OK && requestCode == CODE_CHILD_FORM) {
+            Book book = (Book) data.getExtras().getSerializable("BOOK");
+            handleNewBook.newBook(book);
+        }
+    }
+
+    private void createObjects(){
+        handleNewBook = new handleNewBook(this);
+    }
+
+    private void createMenus(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -124,7 +149,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void initRecyclerview(){
+    private void createRecyclerview(){
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mGridLayoutManager = new GridLayoutManager(this, 2);
@@ -214,5 +239,29 @@ public class MainActivity extends AppCompatActivity
                 mAdapter.notifyItemInserted(mPhotosList.size());
             }
         });
+    }
+
+
+    class handleNewBook {
+        private Context context;
+
+        handleNewBook(Context context){
+            this.context = context;
+        }
+
+        private void startNewBook(){
+            Intent intent = new Intent(context, NewBook.class);
+            startActivityForResult(intent, CODE_CHILD_NEW);
+        }
+
+        private void startNewBookForm(Book book){
+            Intent intent = new Intent(context, NewBookForm.class);
+            intent.putExtra("BOOK",book);
+            startActivityForResult(intent, CODE_CHILD_FORM);
+        }
+
+        private void newBook(Book book){
+            Toast.makeText(context, "Added new book", Toast.LENGTH_SHORT).show();
+        }
     }
 }

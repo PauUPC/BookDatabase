@@ -1,6 +1,7 @@
-package marcer.pau.bookdatabase;
+package marcer.pau.bookdatabase.newBook;
 
-import android.graphics.drawable.Drawable;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,7 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import marcer.pau.bookdatabase.serializables.Book;
+import marcer.pau.bookdatabase.R;
 
 
 public class NewBookForm extends AppCompatActivity {
@@ -21,14 +24,9 @@ public class NewBookForm extends AppCompatActivity {
     private EditText publisher;
     private EditText category;
     private EditText personal_evaluation;
-    private EditText imagePath;
     private Book book;
-    onNewBookAdded onNewBookAdded;
     private static final String BOOK_KEY = "BOOK";
 
-    public interface onNewBookAdded{
-        void needToUpdateView(Book book);
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +48,9 @@ public class NewBookForm extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Toast.makeText(getApplicationContext(), "back pressed", Toast.LENGTH_SHORT).show();
                 super.onBackPressed();
                 return true;
             case R.id.menuaddform_action_forward:
-                Toast.makeText(getApplicationContext(), "forward pressed", Toast.LENGTH_SHORT).show();
                 saveBook();
                 return true;
             default:
@@ -78,8 +74,10 @@ public class NewBookForm extends AppCompatActivity {
         title = (EditText) findViewById(R.id.addbookform_title);
         author = (EditText) findViewById(R.id.addbookform_author);
         thumbnail =(ImageView) findViewById(R.id.addbookform_img);
-        Drawable drawable = getResources().getDrawable(R.mipmap.ic_no_image_available);
-        //thumbnail.setImageDrawable(drawable);
+        publishedDate = (EditText) findViewById(R.id.addbookform_pubdate);
+        publisher = (EditText) findViewById(R.id.addbookform_publisher);
+        category = (EditText) findViewById(R.id.addbookform_cat);
+        personal_evaluation = (EditText) findViewById(R.id.addbookform_eval);
 
         if(book != null) {
             title.setText(book.getTitle());
@@ -89,24 +87,32 @@ public class NewBookForm extends AppCompatActivity {
     }
 
     private void saveBook(){
+        extractBookFromForm();
+        finishAndReturn();
+    }
+
+    private void extractBookFromForm(){
         //TODO check if book is not full null
-        //extractBookFromForm();
-        saveToDB();
-        addToView();
+        String thumbnail;
+        if(book != null)
+            thumbnail =  book.getThumbnailPath();
+        else
+            thumbnail = "";
+        book = new Book(
+                title.getText().toString(),
+                author.getText().toString(),
+                publishedDate.getText().toString(),
+                publisher.getText().toString(),
+                category.getText().toString(),
+                personal_evaluation.getText().toString(),
+                thumbnail
+                );
     }
 
-    private void saveToDB(){
-        //TODO add book to database
+    private void finishAndReturn(){
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("BOOK", book);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
     }
-
-    private void addToView(){
-        onNewBookAdded.needToUpdateView(book);
-    }
-
-//    private void extractBookFromForm(){
-//        book = new Book(
-//                title.getText().toString(),
-//                author.getText().toString(),
-//                );
-//    }
 }

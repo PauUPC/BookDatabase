@@ -1,4 +1,4 @@
-package marcer.pau.bookdatabase;
+package marcer.pau.bookdatabase.serializables;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,19 +14,30 @@ public class Book implements Serializable {
     private String publishedDate;
     private String publisher;
     private String category;
+
     private String personal_evaluation;
-    private String imagePath;
+    private String thumbnailPath;
     //private BookImageHandler bookImageHandler;
 
+    public Book(){
+        this.title = "";
+        this.author = "";
+        this.publishedDate = "";
+        this.publisher = "";
+        this.category = "";
+        this.personal_evaluation = "";
+        this.thumbnailPath = "";
+    }
+
     public Book(String title, String author, String publishedDate, String publisher,
-                String category, String personal_evaluation) {
+                String category, String personal_evaluation, String thumbnailPath) {
         this.title = title;
         this.author = author;
         this.publishedDate = publishedDate;
         this.publisher = publisher;
         this.category = category;
         this.personal_evaluation = personal_evaluation;
-        this.imagePath = null;
+        this.thumbnailPath = thumbnailPath;
         //bookImageHandler = new BookImageHandler(context);
     }
 
@@ -48,6 +59,10 @@ public class Book implements Serializable {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public  void setID(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -78,8 +93,8 @@ public class Book implements Serializable {
         return personal_evaluation;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getThumbnailPath() {
+        return thumbnailPath;
     }
 
     @Override

@@ -21,10 +21,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewBook"
+            android:name=".newBook.NewBook"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".NewBookForm"
+            android:name=".newBook.NewBookForm"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

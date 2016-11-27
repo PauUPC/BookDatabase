@@ -1,8 +1,7 @@
-package marcer.pau.bookdatabase;
+package marcer.pau.bookdatabase.newBook;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,21 +13,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import marcer.pau.bookdatabase.serializables.Book;
+import marcer.pau.bookdatabase.api.BookApiRequester;
+import marcer.pau.bookdatabase.R;
 
-public class NewBook extends AppCompatActivity implements BookApiRequester.BookApiRequesterResponse{
+public class NewBook extends AppCompatActivity implements BookApiRequester.BookApiRequesterResponse {
 
-    Toolbar toolbar;
-    EditText editText;
-    Button button_manual;
-    Button button_submit;
-    ProgressBar progressBar;
-    BookApiRequester bookApiRequester;
-    Runnable queryApirunnable;
+    private Toolbar toolbar;
+    private EditText editText;
+    private Button button_manual;
+    private Button button_submit;
+    private ProgressBar progressBar;
+    private BookApiRequester bookApiRequester;
+    private Book book;
+    public final static int CODE_CHILD = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +49,10 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Toast.makeText(getApplicationContext(), "back pressed", Toast.LENGTH_SHORT).show();
                 super.onBackPressed();
                 return true;
             case R.id.menuadd_action_forward:
-                Toast.makeText(getApplicationContext(), "forward pressed", Toast.LENGTH_SHORT).show();
-                nextForm(null);
+                finishAndReturn();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -65,12 +62,19 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     @Override
     public void receivedNewBook(Book book) {
         if(book != null) {
+            this.book = book;
             enableControls();
-            nextForm(book);
+            finishAndReturn();
         } else {
             enableControls();
             handleBadQuery();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAndReturn();
     }
 
     private void createToolbar() {
@@ -115,8 +119,8 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
         button_manual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "null", Toast.LENGTH_SHORT).show();
-                nextForm(null);
+                book = new Book();
+                finishAndReturn();
             }
         });
 
@@ -164,15 +168,14 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
         editText.setEnabled(true);
     }
 
-    private void nextForm(Book book){
-        Context context = getBaseContext();
-        Intent intent = new Intent(context, NewBookForm.class);
-        intent.putExtra("BOOK",book);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
-
     private void handleBadQuery(){
         //TODO Show Bad Query Feedback
+    }
+
+    private void finishAndReturn(){
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("BOOK", book);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
     }
 }

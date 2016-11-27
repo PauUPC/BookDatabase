@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="marcer.pau.bookdatabase.NewBook">
+    tools:context="marcer.pau.bookdatabase.newBook.NewBook">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -60,7 +60,8 @@
                     android:hint="@string/isbn"
                     android:maxLines="1"
                     android:maxLength="13"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:text="9788448039806" />
 
                 <Button
                     android:text="@string/add"

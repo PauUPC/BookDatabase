@@ -20,9 +20,8 @@ public class Book implements Serializable {
     private String publisher;
     private String category;
     private float personal_evaluation;
-
     private String thumbnailURL;
-    private Bitmap thumbnail;
+    private byte[] thumbnail;
     //private BookImageHandler bookImageHandler;
 
     public Book(){
@@ -37,15 +36,15 @@ public class Book implements Serializable {
     }
 
     public Book(String title, String author, String publishedDate, String publisher,
-                String category, int personal_evaluation, String thumbnail) {
+                String category, float personal_evaluation, String thumbnailURL, byte[] bitmap) {
         this.title = title;
         this.author = author;
         this.publishedDate = publishedDate;
         this.publisher = publisher;
         this.category = category;
         this.personal_evaluation = personal_evaluation;
-        this.thumbnailURL = thumbnail;
-        //bookImageHandler = new BookImageHandler(context);
+        this.thumbnailURL = thumbnailURL;
+        this.thumbnail = bitmap;
     }
 
     public Book(JSONObject jsonObject){
@@ -102,11 +101,11 @@ public class Book implements Serializable {
         return personal_evaluation;
     }
 
-    public Bitmap getThumbnail() {
+    public byte[] getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(Bitmap bitmap){
+    public void setThumbnail(byte[] bitmap){
         this.thumbnail = bitmap;
     }
 

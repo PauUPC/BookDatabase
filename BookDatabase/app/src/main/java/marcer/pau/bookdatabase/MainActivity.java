@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import java.util.ArrayList;
 
+import marcer.pau.bookdatabase.database.BookData;
 import marcer.pau.bookdatabase.newBook.NewBook;
 import marcer.pau.bookdatabase.newBook.NewBookForm;
 import marcer.pau.bookdatabase.serializables.Book;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity
     private LinearLayoutManager mLinearLayoutManager;
     private GridLayoutManager mGridLayoutManager;
     private RecyclerAdapter mAdapter;
-
+    private BookData bookData;
     private SearchView searchView;
     private handleNewBook handleNewBook;
     private final static int CODE_CHILD_NEW = 1;
@@ -110,6 +111,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        bookData.open();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        //bookData.close();
+        super.onPause();
+    }
+
+    @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode==RESULT_OK && requestCode == CODE_CHILD_NEW) {
@@ -125,6 +138,10 @@ public class MainActivity extends AppCompatActivity
     private void createObjects(){
         handleNewBook = new handleNewBook(this);
         bookArrayList = new ArrayList<>();
+        bookData = new BookData(this);
+        bookData = new BookData(this);
+        bookData.open();
+        bookArrayList = bookData.getAllBooksQuery();
     }
 
     private void createMenus(){
@@ -221,6 +238,7 @@ public class MainActivity extends AppCompatActivity
 
         handleNewBook(Context context){
             this.context = context;
+
         }
 
         private void startNewBook(){
@@ -235,8 +253,8 @@ public class MainActivity extends AppCompatActivity
         }
 
         private void newBook(Book book){
-            Toast.makeText(context, "Added new book", Toast.LENGTH_SHORT).show();
-            bookArrayList.add(book);
+            bookData.createBook(book);
+            bookArrayList = bookData.repeatLastQuery();
             mAdapter.notifyDataSetChanged();
         }
     }

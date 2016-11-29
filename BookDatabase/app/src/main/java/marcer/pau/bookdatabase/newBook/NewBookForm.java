@@ -15,6 +15,7 @@ import android.widget.RatingBar;
 import marcer.pau.bookdatabase.api.RequestThumbnail;
 import marcer.pau.bookdatabase.serializables.Book;
 import marcer.pau.bookdatabase.R;
+import marcer.pau.bookdatabase.serializables.SerialBitmap;
 
 
 public class NewBookForm extends AppCompatActivity implements RequestThumbnail.AsyncResponse {
@@ -28,7 +29,9 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
     private EditText category;
     private RatingBar personal_evaluation;
     private Book book;
+    private Bitmap bitmap;
     private RequestThumbnail requestThumbnail;
+    private SerialBitmap serialBitmap;
     private static final String BOOK_KEY = "BOOK";
 
     @Override
@@ -73,6 +76,7 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
     private void createObjects(){
         book = (Book) getIntent().getSerializableExtra(BOOK_KEY);
         requestThumbnail = new RequestThumbnail(this);
+        serialBitmap = new SerialBitmap();
     }
 
     private void createListeners(){
@@ -105,11 +109,11 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
 
     private void extractBookFromForm(){
         //TODO check if book is not full null
-        String thumbnail;
+        String thumbnailURL;
         if(book != null)
-            thumbnail =  book.getThumbnailURL();
+            thumbnailURL =  book.getThumbnailURL();
         else
-            thumbnail = "";
+            thumbnailURL = "";
         book = new Book(
                 title.getText().toString(),
                 author.getText().toString(),
@@ -117,7 +121,8 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
                 publisher.getText().toString(),
                 category.getText().toString(),
                 personal_evaluation.getNumStars(),
-                thumbnail
+                thumbnailURL,
+                serialBitmap.getBytes(bitmap)
                 );
     }
 
@@ -135,5 +140,6 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
     @Override
     public void processFinish(Bitmap image) {
         thumbnail.setImageBitmap(image);
+        this.bitmap = image;
     }
 }

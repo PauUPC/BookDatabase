@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import marcer.pau.bookdatabase.serializables.Book;
+import marcer.pau.bookdatabase.serializables.SerialBitmap;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHolder> {
 
@@ -37,12 +38,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
     }
 
     static class BookHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private SerialBitmap serialBitmap;
         private ImageView thumbnail;
         private TextView title;
         private TextView author;
 
         BookHolder(View view) {
             super(view);
+            serialBitmap = new SerialBitmap();
             thumbnail = (ImageView) view.findViewById(R.id.recycleritemimg);
             title = (TextView) view.findViewById(R.id.recycleritemTitle);
             author = (TextView) view.findViewById(R.id.recycleritemAuthor);
@@ -57,8 +60,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
         public void bindBook(Book book) {
             title.setText(book.getTitle());
             author.setText(book.getAuthor());
-            thumbnail.setImageBitmap(BitmapFactory.decodeResource(thumbnail.getContext().getResources(),
-                    R.mipmap.ic_no_image_available));
+            thumbnail.setImageBitmap(serialBitmap.getBitmap(book.getThumbnail()));
             //TODO BitmapFactory.decodeResource(getResources(), R.mipmap.ic_no_image_available);
 
         }

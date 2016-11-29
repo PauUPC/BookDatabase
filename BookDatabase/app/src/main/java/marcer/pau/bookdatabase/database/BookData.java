@@ -5,27 +5,37 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import marcer.pau.bookdatabase.serializables.Book;
+import marcer.pau.bookdatabase.serializables.SerialBitmap;
 
 public class BookData {
 
-    // Database fields
+    private String lastQuery;
     private SQLiteDatabase database;
-
-    // Helper to manipulate table
     private MySQLiteHelper dbHelper;
-
-    // Here we only select Title and Author, must select the appropriate columns
-    private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
-            MySQLiteHelper.COLUMN_TITLE, MySQLiteHelper.COLUMN_AUTHOR};
+    private String[] allColumns = {
+            MySQLiteHelper.COLUMN_ID,
+            MySQLiteHelper.COLUMN_TITLE,
+            MySQLiteHelper.COLUMN_AUTHOR,
+            MySQLiteHelper.COLUMN_YEAR,
+            MySQLiteHelper.COLUMN_PUBLISHER,
+            MySQLiteHelper.COLUMN_CATEGORY,
+            MySQLiteHelper.COLUMN_PERSONAL_EVALUATION,
+            MySQLiteHelper.COLUMN_THUMBNAIL_PATH,
+            MySQLiteHelper.COLUMN_THUMBNAIL_BMP
+    };
 
     public BookData(Context context) {
         dbHelper = new MySQLiteHelper(context);
+        lastQuery = "TITLE";
     }
 
     public void open() throws SQLException {
@@ -37,41 +47,29 @@ public class BookData {
     }
 
     public void createBook(Book book) {
-        String title = book.getTitle();
-        String author = book.getAuthor();
         ContentValues values = new ContentValues();
-        Log.d("Creating", "Creating " + title + " " + author);
-
-        // Add data: Note that this method only provides title and author
-        // Must modify the method to add the full data
-        values.put(MySQLiteHelper.COLUMN_TITLE, title);
-        values.put(MySQLiteHelper.COLUMN_AUTHOR, author);
-
-        // Invented data
-        values.put(MySQLiteHelper.COLUMN_PUBLISHER, "Do not know");
-        values.put(MySQLiteHelper.COLUMN_YEAR, 2030);
-        values.put(MySQLiteHelper.COLUMN_CATEGORY, "Fantasia");
-        values.put(MySQLiteHelper.COLUMN_PERSONAL_EVALUATION, "regular");
-
-        // Actual insertion of the data using the values variable
-        long insertId = database.insert(MySQLiteHelper.TABLE_BOOKS, null,
-                values);
-
+        values.put(MySQLiteHelper.COLUMN_TITLE, book.getTitle());
+        values.put(MySQLiteHelper.COLUMN_AUTHOR, book.getAuthor());
+        values.put(MySQLiteHelper.COLUMN_YEAR, book.getPublishedDate());
+        values.put(MySQLiteHelper.COLUMN_PUBLISHER, book.getPublisher());
+        values.put(MySQLiteHelper.COLUMN_CATEGORY, book.getCategory());
+        values.put(MySQLiteHelper.COLUMN_PERSONAL_EVALUATION,
+                book.getPersonal_evaluation());
+        values.put(MySQLiteHelper.COLUMN_THUMBNAIL_PATH, book.getThumbnailURL());
+        values.put(MySQLiteHelper.COLUMN_THUMBNAIL_BMP, book.getThumbnail());
+        long insertId = database.insert(MySQLiteHelper.TABLE_BOOKS, null, values);
     }
 
     public void deleteBook(Book book) {
         long id = book.getId();
-        System.out.println("Book deleted with id: " + id);
-        database.delete(MySQLiteHelper.TABLE_BOOKS, MySQLiteHelper.COLUMN_ID
-                + " = " + id, null);
+        database.delete(MySQLiteHelper.TABLE_BOOKS,
+                MySQLiteHelper.COLUMN_ID + " = " + id, null);
     }
 
-    public List<Book> getAllBooks() {
-        List<Book> books = new ArrayList<>();
-
+    public ArrayList<Book> getAllBooksQuery() {
+        ArrayList<Book> books = new ArrayList<>();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
                 allColumns, null, null, null, null, null);
-
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Book book = cursorToBook(cursor);
@@ -80,11 +78,73 @@ public class BookData {
         }
         // make sure to close the cursor
         cursor.close();
+        lastQuery = "ALL";
         return books;
     }
 
+    public ArrayList<Book> orderByTitleQuery(){
+        ArrayList<Book> books = new ArrayList<>();
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
+                allColumns, null, null, null, null, MySQLiteHelper.COLUMN_TITLE+"DESC");
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Book book = cursorToBook(cursor);
+            books.add(book);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        lastQuery = "TITLE";
+        return books;
+    }
+
+    public ArrayList<Book> orderByCategoryQuery(){
+        ArrayList<Book> books = new ArrayList<>();
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
+                allColumns, null, null, null, null, MySQLiteHelper.COLUMN_CATEGORY+"DESC");
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Book book = cursorToBook(cursor);
+            books.add(book);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        lastQuery = "CATEGORY";
+        return books;
+    }
+
+    public ArrayList<Book> repeatLastQuery(){
+        switch (lastQuery){
+            case "ALL":
+                return getAllBooksQuery();
+            case "TITLE":
+                return orderByTitleQuery();
+            case "CATEGORY":
+                return orderByCategoryQuery();
+        }
+        return null;
+    }
+
+//    public ArrayList<Book> filterByCategory(String category){
+//
+//    }
+//
+//    public ArrayList<Book> filterByAuthor(String category){
+//
+//    }
+
+
     private Book cursorToBook(Cursor cursor) {
-        Book book = new Book(cursor.getString(1), cursor.getString(2), null, null, null, 0, null);
+        Book book = new Book(cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getString(4),
+                cursor.getString(5),
+                cursor.getFloat(6),
+                cursor.getString(7),
+                cursor.getBlob(8)
+        );
         book.setID(cursor.getLong(0));
         return book;
     }

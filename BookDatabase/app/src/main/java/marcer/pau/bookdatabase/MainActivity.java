@@ -27,15 +27,15 @@ import marcer.pau.bookdatabase.newBook.NewBookForm;
 import marcer.pau.bookdatabase.serializables.Book;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ImageRequester.ImageRequesterResponse {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ArrayList<Photo> mPhotosList;
-    private ImageRequester mImageRequester;
+    //private ArrayList<Photo> mPhotosList;
+    //private ImageRequester mImageRequester;
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private GridLayoutManager mGridLayoutManager;
-    private RecyclerAdapter mAdapter;
+    //private RecyclerAdapter mAdapter;
 
     private SearchView searchView;
     //private BookData bookData;
@@ -113,9 +113,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        if (mPhotosList.size() == 0) {
-            requestPhoto();
-        }
+//        if (mPhotosList.size() == 0) {
+//            requestPhoto();
+//        }
     }
 
     @Override
@@ -155,11 +155,11 @@ public class MainActivity extends AppCompatActivity
         mGridLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
-        mPhotosList = new ArrayList<>();
-        mImageRequester = new ImageRequester(this);
-
-        mAdapter = new RecyclerAdapter(mPhotosList);
-        mRecyclerView.setAdapter(mAdapter);
+//        mPhotosList = new ArrayList<>();
+//        mImageRequester = new ImageRequester(this);
+//
+//        mAdapter = new RecyclerAdapter(mPhotosList);
+//        mRecyclerView.setAdapter(mAdapter);
 
         setRecyclerViewScrollListener();
         setRecyclerViewItemTouchListener();
@@ -181,9 +181,9 @@ public class MainActivity extends AppCompatActivity
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
-                if (!mImageRequester.isLoadingData() && totalItemCount == getLastVisibleItemPosition() + 1) {
-                    requestPhoto();
-                }
+//                if (!mImageRequester.isLoadingData() && totalItemCount == getLastVisibleItemPosition() + 1) {
+//                    requestPhoto();
+//                }
             }
         });
     }
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
-                mPhotosList.remove(position);
+                //mPhotosList.remove(position);
                 mRecyclerView.getAdapter().notifyItemRemoved(position);
             }
         };
@@ -207,39 +207,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void changeLayoutManager(MenuItem item) {
-        if (mRecyclerView.getLayoutManager().equals(mLinearLayoutManager)) {
-            mRecyclerView.setLayoutManager(mGridLayoutManager);
-            if (mPhotosList.size() == 1) {
-                requestPhoto();
-            }
-            item.setIcon(getResources().getDrawable(R.drawable.ic_menu_view_list_black_24dp));
-            item.setTitle(R.string.menu_layout_list);
-        } else {
-            mRecyclerView.setLayoutManager(mLinearLayoutManager);
-            item.setIcon(getResources().getDrawable(R.drawable.ic_menu_view_grid_black_24dp));
-            item.setTitle(R.string.menu_layout_grid);
-        }
+//        if (mRecyclerView.getLayoutManager().equals(mLinearLayoutManager)) {
+//            mRecyclerView.setLayoutManager(mGridLayoutManager);
+//            if (mPhotosList.size() == 1) {
+//                requestPhoto();
+//            }
+//            item.setIcon(getResources().getDrawable(R.drawable.ic_menu_view_list_black_24dp));
+//            item.setTitle(R.string.menu_layout_list);
+//        } else {
+//            mRecyclerView.setLayoutManager(mLinearLayoutManager);
+//            item.setIcon(getResources().getDrawable(R.drawable.ic_menu_view_grid_black_24dp));
+//            item.setTitle(R.string.menu_layout_grid);
+//        }
     }
 
-    private void requestPhoto() {
-        try {
-            mImageRequester.getPhoto();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void receivedNewPhoto(final Photo newPhoto) {
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mPhotosList.add(newPhoto);
-                mAdapter.notifyItemInserted(mPhotosList.size());
-            }
-        });
-    }
+//    private void requestPhoto() {
+//        try {
+//            mImageRequester.getPhoto();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     class handleNewBook {
@@ -264,4 +252,6 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(context, "Added new book", Toast.LENGTH_SHORT).show();
         }
     }
+
+    //TODO: Handle user permissions for internet and storage
 }

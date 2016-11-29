@@ -144,14 +144,8 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     }
 
     private void triggerBooksQuery(final String isbn) {
-        Runnable queryApiRunnable = new Runnable() {
-            @Override
-            public void run() {
-                disableControls();
-                bookApiRequester.getBook(isbn);
-            }
-        };
-        runOnUiThread(queryApiRunnable );
+        disableControls();
+        bookApiRequester.execute(isbn);
     }
 
     private void disableControls() {

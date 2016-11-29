@@ -1,6 +1,5 @@
 package marcer.pau.bookdatabase;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,8 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 import marcer.pau.bookdatabase.newBook.NewBook;
@@ -29,16 +26,13 @@ import marcer.pau.bookdatabase.serializables.Book;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    //private ArrayList<Photo> mPhotosList;
-    //private ImageRequester mImageRequester;
-
+    private ArrayList<Book> bookArrayList;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private GridLayoutManager mGridLayoutManager;
-    //private RecyclerAdapter mAdapter;
+    private RecyclerAdapter mAdapter;
 
     private SearchView searchView;
-    //private BookData bookData;
     private handleNewBook handleNewBook;
     private final static int CODE_CHILD_NEW = 1;
     private final static int CODE_CHILD_FORM = 2;
@@ -113,9 +107,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-//        if (mPhotosList.size() == 0) {
-//            requestPhoto();
-//        }
     }
 
     @Override
@@ -133,6 +124,7 @@ public class MainActivity extends AppCompatActivity
 
     private void createObjects(){
         handleNewBook = new handleNewBook(this);
+        bookArrayList = new ArrayList<>();
     }
 
     private void createMenus(){
@@ -154,12 +146,8 @@ public class MainActivity extends AppCompatActivity
         mLinearLayoutManager = new LinearLayoutManager(this);
         mGridLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-
-//        mPhotosList = new ArrayList<>();
-//        mImageRequester = new ImageRequester(this);
-//
-//        mAdapter = new RecyclerAdapter(mPhotosList);
-//        mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new RecyclerAdapter(bookArrayList);
+        mRecyclerView.setAdapter(mAdapter);
 
         setRecyclerViewScrollListener();
         setRecyclerViewItemTouchListener();
@@ -181,9 +169,7 @@ public class MainActivity extends AppCompatActivity
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
-//                if (!mImageRequester.isLoadingData() && totalItemCount == getLastVisibleItemPosition() + 1) {
-//                    requestPhoto();
-//                }
+                // TODO getLastVisibleItemPosition()
             }
         });
     }
@@ -198,7 +184,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
-                //mPhotosList.remove(position);
+                bookArrayList.remove(position);
                 mRecyclerView.getAdapter().notifyItemRemoved(position);
             }
         };
@@ -207,18 +193,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void changeLayoutManager(MenuItem item) {
-//        if (mRecyclerView.getLayoutManager().equals(mLinearLayoutManager)) {
-//            mRecyclerView.setLayoutManager(mGridLayoutManager);
-//            if (mPhotosList.size() == 1) {
-//                requestPhoto();
-//            }
-//            item.setIcon(getResources().getDrawable(R.drawable.ic_menu_view_list_black_24dp));
-//            item.setTitle(R.string.menu_layout_list);
-//        } else {
-//            mRecyclerView.setLayoutManager(mLinearLayoutManager);
-//            item.setIcon(getResources().getDrawable(R.drawable.ic_menu_view_grid_black_24dp));
-//            item.setTitle(R.string.menu_layout_grid);
-//        }
+        if (mRecyclerView.getLayoutManager().equals(mLinearLayoutManager)) {
+            mRecyclerView.setLayoutManager(mGridLayoutManager);
+            if (bookArrayList.size() == 1) {
+                //TODO more book
+            }
+            item.setIcon(getResources().getDrawable(R.drawable.ic_menu_view_list_black_24dp));
+            item.setTitle(R.string.menu_layout_list);
+        } else {
+            mRecyclerView.setLayoutManager(mLinearLayoutManager);
+            item.setIcon(getResources().getDrawable(R.drawable.ic_menu_view_grid_black_24dp));
+            item.setTitle(R.string.menu_layout_grid);
+        }
     }
 
 //    private void requestPhoto() {
@@ -250,6 +236,8 @@ public class MainActivity extends AppCompatActivity
 
         private void newBook(Book book){
             Toast.makeText(context, "Added new book", Toast.LENGTH_SHORT).show();
+            bookArrayList.add(book);
+            mAdapter.notifyDataSetChanged();
         }
     }
 

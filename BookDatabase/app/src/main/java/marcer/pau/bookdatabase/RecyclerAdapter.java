@@ -1,75 +1,66 @@
-//package marcer.pau.bookdatabase;
-//
-//import android.content.Context;
-//import android.content.Intent;
-//import android.support.v7.widget.RecyclerView;
-//import android.util.Log;
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.view.ViewGroup;
-//import android.widget.ImageView;
-//import android.widget.TextView;
-//
-//import com.squareup.picasso.Picasso;
-//
-//import java.util.ArrayList;
-//
-//public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.PhotoHolder> {
-//
-//    private ArrayList<Photo> mPhotos;
-//
-//    public RecyclerAdapter(ArrayList<Photo> photos) {
-//        mPhotos = photos;
-//    }
-//
-//    @Override
-//    public RecyclerAdapter.PhotoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View inflatedView = LayoutInflater.from(parent.getContext())
-//                .inflate(R.layout.recyclerview_item_row, parent, false);
-//        return new PhotoHolder(inflatedView);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(RecyclerAdapter.PhotoHolder holder, int position) {
-//        Photo itemPhoto = mPhotos.get(position);
-//        holder.bindPhoto(itemPhoto);
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return mPhotos.size();
-//    }
-//
-//    public static class PhotoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-//        private ImageView mItemImage;
-//        private TextView mItemDate;
-//        private TextView mItemDescription;
-//        private Photo mPhoto;
-//
-//        private static final String PHOTO_KEY = "PHOTO";
-//
-//        public PhotoHolder(View v) {
-//            super(v);
-//
-//            mItemImage = (ImageView) v.findViewById(R.id.item_image);
-//            mItemDate = (TextView) v.findViewById(R.id.item_date);
-//            mItemDescription = (TextView) v.findViewById(R.id.item_description);
-//            v.setOnClickListener(this);
-//        }
-//
-//        @Override
-//        public void onClick(View v) {
-//            Context context = itemView.getContext();
-//            Intent showPhotoIntent = new Intent(context, PhotoActivity.class);
-//            showPhotoIntent.putExtra(PHOTO_KEY, mPhoto);
-//            context.startActivity(showPhotoIntent);
-//        }
-//
-//        public void bindPhoto(Photo photo) {
-//            mPhoto = photo;
-//            Picasso.with(mItemImage.getContext()).load(photo.getUrl()).into(mItemImage);
-//            mItemDate.setText(photo.getHumanDate());
-//            mItemDescription.setText(photo.getExplanation());
-//        }
-//    }
-//}
+package marcer.pau.bookdatabase;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import java.util.ArrayList;
+import marcer.pau.bookdatabase.serializables.Book;
+
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHolder> {
+
+    private ArrayList<Book> bookArrayList;
+
+    public RecyclerAdapter(ArrayList<Book> books) {
+        bookArrayList = books;
+    }
+
+    @Override
+    public BookHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View inflatedView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recyclerview_item_row, parent, false);
+        return new BookHolder(inflatedView);
+    }
+
+    @Override
+    public void onBindViewHolder(BookHolder holder, int position) {
+        holder.bindBook(bookArrayList.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return bookArrayList.size();
+    }
+
+    static class BookHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private ImageView thumbnail;
+        private TextView title;
+        private TextView author;
+
+        BookHolder(View view) {
+            super(view);
+            thumbnail = (ImageView) view.findViewById(R.id.recycleritemimg);
+            title = (TextView) view.findViewById(R.id.recycleritemTitle);
+            author = (TextView) view.findViewById(R.id.recycleritemAuthor);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+        }
+
+        public void bindBook(Book book) {
+            title.setText(book.getTitle());
+            author.setText(book.getAuthor());
+            thumbnail.setImageBitmap(BitmapFactory.decodeResource(thumbnail.getContext().getResources(),
+                    R.mipmap.ic_no_image_available));
+            //TODO BitmapFactory.decodeResource(getResources(), R.mipmap.ic_no_image_available);
+
+        }
+    }
+}

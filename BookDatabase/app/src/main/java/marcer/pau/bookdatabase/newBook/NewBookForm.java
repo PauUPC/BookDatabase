@@ -94,7 +94,7 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
             publisher.setText(book.getPublisher());
             category.setText(book.getCategory());
             personal_evaluation.setRating(book.getPersonal_evaluation());
-            getBitmapFrmURL(book.getThumbnailPath());
+            getBitmapFrmURL(book.getThumbnailURL());
         }
     }
 
@@ -107,7 +107,7 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
         //TODO check if book is not full null
         String thumbnail;
         if(book != null)
-            thumbnail =  book.getThumbnailPath();
+            thumbnail =  book.getThumbnailURL();
         else
             thumbnail = "";
         book = new Book(

@@ -1,12 +1,15 @@
 package marcer.pau.bookdatabase.serializables;
 
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+
+import marcer.pau.bookdatabase.R;
 
 public class Book implements Serializable {
     private long id;
@@ -17,7 +20,9 @@ public class Book implements Serializable {
     private String publisher;
     private String category;
     private float personal_evaluation;
-    private String thumbnailPath;
+
+    private String thumbnailURL;
+    private Bitmap thumbnail;
     //private BookImageHandler bookImageHandler;
 
     public Book(){
@@ -27,18 +32,19 @@ public class Book implements Serializable {
         this.publisher = "";
         this.category = "";
         this.personal_evaluation = 0;
-        this.thumbnailPath = "";
+        this.thumbnailURL = "";
+        this.thumbnail = null;
     }
 
     public Book(String title, String author, String publishedDate, String publisher,
-                String category, int personal_evaluation, String thumbnailPath) {
+                String category, int personal_evaluation, String thumbnail) {
         this.title = title;
         this.author = author;
         this.publishedDate = publishedDate;
         this.publisher = publisher;
         this.category = category;
         this.personal_evaluation = personal_evaluation;
-        this.thumbnailPath = thumbnailPath;
+        this.thumbnailURL = thumbnail;
         //bookImageHandler = new BookImageHandler(context);
     }
 
@@ -55,7 +61,7 @@ public class Book implements Serializable {
                 JSONArray category = volumeInfo.getJSONArray("categories");
                 this.category = category.getString(0);
                 JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-                this.thumbnailPath = imageLinks.getString("smallThumbnail");
+                this.thumbnailURL = imageLinks.getString("smallThumbnail");
                 this.personal_evaluation = 0;
                 this.publisher = "unknown";
             }
@@ -96,8 +102,16 @@ public class Book implements Serializable {
         return personal_evaluation;
     }
 
-    public String getThumbnailPath() {
-        return thumbnailPath;
+    public Bitmap getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(Bitmap bitmap){
+        this.thumbnail = bitmap;
+    }
+
+    public String getThumbnailURL() {
+        return thumbnailURL;
     }
 
     @Override
@@ -106,50 +120,3 @@ public class Book implements Serializable {
     }
 
 }
-
-//private class BookImageHandler {
-//    //http://stackoverflow.com/questions/17674634/saving-and-reading-bitmaps-images-from-internal-memory-in-android
-//        Context context;
-//
-//        BookImageHandler(Context context){
-//            this.context = context;
-//        }
-//
-//        private String saveToInternalStorage(Bitmap bitmapImage){
-//            ContextWrapper cw = new ContextWrapper(context);
-//            // path to /data/data/yourapp/app_data/imageDir
-//            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-//            // Create imageDir
-//            File mypath=new File(directory,"profile.jpg");
-//
-//            FileOutputStream fos = null;
-//            try {
-//                fos = new FileOutputStream(mypath);
-//                // Use the compress method on the BitMap object to write image to the OutputStream
-//                bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                try {
-//                    fos.close();
-//                } catch (NullPointerException | IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            return directory.getAbsolutePath();
-//        }
-//        private void loadImageFromStorage(String path)
-//        {
-//            try {
-//                File f=new File(path, "profile.jpg");
-//                Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-//                ImageView img=(ImageView)findViewById(R.id.imgPicker);
-//                img.setImageBitmap(b);
-//            }
-//            catch (FileNotFoundException e)
-//            {
-//                e.printStackTrace();
-//            }
-//
-//        }
-//    }

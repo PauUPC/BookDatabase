@@ -37,7 +37,7 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_book_form);
+        setContentView(R.layout.add_bock_form);
         createToolbar();
         createObjects();
         createListeners();

@@ -12,7 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import marcer.pau.bookdatabase.serializables.Book;
 import marcer.pau.bookdatabase.api.BookApiRequester;
@@ -22,11 +24,13 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
 
     private Toolbar toolbar;
     private EditText editText;
+    private TextView textView;
     private Button button_manual;
     private Button button_submit;
     private ProgressBar progressBar;
     private BookApiRequester bookApiRequester;
     private Book book;
+    byte behaviourAdd;
     public final static int CODE_CHILD = 10;
 
     @Override
@@ -51,9 +55,9 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
             case android.R.id.home:
                 super.onBackPressed();
                 return true;
-            case R.id.menuadd_action_forward:
-                finishAndReturn();
-                return true;
+//            case R.id.menuadd_action_forward:
+//                finishAndReturn();
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -62,9 +66,14 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     @Override
     public void receivedNewBook(Book book) {
         if(book != null) {
-            this.book = book;
-            enableControls();
-            finishAndReturn();
+            if (book.getTitle() == null) {
+                enableControls();
+                handleBadQuery();
+            } else {
+                this.book = book;
+                enableControls();
+                finishAndReturn();
+            }
         } else {
             enableControls();
             handleBadQuery();
@@ -85,15 +94,15 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     }
 
     private void createObjects() {
-        bookApiRequester = new BookApiRequester(this);
-    }
-
-    private void createListeners(){
+        behaviourAdd = 1;
         editText = (EditText) findViewById(R.id.addbook_input_isbn);
         button_manual = (Button) findViewById(R.id.addbook_input_button_manual);
         button_submit = (Button) findViewById(R.id.addbook_input_button_submit);
         progressBar = (ProgressBar) findViewById(R.id.addbook_progressBar);
+        textView = (TextView) findViewById(R.id.addbook_worngQuery);
+    }
 
+    private void createListeners(){
         editText.addTextChangedListener(new TextWatcher() {
             boolean finished = false;
             @Override
@@ -125,7 +134,6 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
         });
 
         button_submit.setOnClickListener(new View.OnClickListener() {
-            byte behaviourAdd = 1;
             @Override
             public void onClick(View view) {
                 switch (behaviourAdd){
@@ -135,7 +143,7 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
                         break;
                     case 0:
                         behaviourAdd = 1;
-                        //TODO Stop query
+                        bookApiRequester.cancel(true);
                         enableControls();
                         break;
                 }
@@ -144,13 +152,18 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     }
 
     private void triggerBooksQuery(final String isbn) {
+        hideError();
         disableControls();
+        bookApiRequester = new BookApiRequester(this);
         bookApiRequester.execute(isbn);
     }
 
     private void disableControls() {
         button_submit.setText(R.string.cancel);
         progressBar.setVisibility(View.VISIBLE);
+        progressBar.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
         button_manual.setEnabled(false);
         editText.setEnabled(false);
     }
@@ -158,12 +171,14 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     private void enableControls(){
         button_submit.setText(R.string.add);
         progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setLayoutParams(new LinearLayout.LayoutParams(0,0));
         button_manual.setEnabled(true);
         editText.setEnabled(true);
     }
 
     private void handleBadQuery(){
         //TODO Show Bad Query Feedback
+        showError();
     }
 
     private void finishAndReturn(){
@@ -171,5 +186,14 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
         resultIntent.putExtra("BOOK", book);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
+    }
+
+    private void showError(){
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private void hideError(){
+        textView.setLayoutParams(new LinearLayout.LayoutParams(0,0));
     }
 }

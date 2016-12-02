@@ -46,7 +46,6 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.add_book_form, menu);
         return true;
     }
@@ -70,7 +69,6 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
         toolbar.setTitle(R.string.menu_add_book);
         toolbar.setNavigationIcon(R.drawable.ic_menuadd_clear_24dp);
         setSupportActionBar(toolbar);
-        //TODO change forward icon
     }
 
     private void createObjects(){
@@ -122,7 +120,8 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
                 category.getText().toString(),
                 personal_evaluation.getNumStars(),
                 thumbnailURL,
-                serialBitmap.getBytes(bitmap)
+                serialBitmap.getBytes(bitmap),
+                book.getReaded()
                 );
     }
 

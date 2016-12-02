@@ -5,16 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import marcer.pau.bookdatabase.serializables.Book;
-import marcer.pau.bookdatabase.serializables.SerialBitmap;
 
 public class BookData {
 
@@ -30,6 +24,7 @@ public class BookData {
             MySQLiteHelper.COLUMN_CATEGORY,
             MySQLiteHelper.COLUMN_PERSONAL_EVALUATION,
             MySQLiteHelper.COLUMN_THUMBNAIL_PATH,
+            MySQLiteHelper.COLUMN_READE,
             MySQLiteHelper.COLUMN_THUMBNAIL_BMP
     };
 
@@ -47,16 +42,7 @@ public class BookData {
     }
 
     public void createBook(Book book) {
-        ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.COLUMN_TITLE, book.getTitle());
-        values.put(MySQLiteHelper.COLUMN_AUTHOR, book.getAuthor());
-        values.put(MySQLiteHelper.COLUMN_YEAR, book.getPublishedDate());
-        values.put(MySQLiteHelper.COLUMN_PUBLISHER, book.getPublisher());
-        values.put(MySQLiteHelper.COLUMN_CATEGORY, book.getCategory());
-        values.put(MySQLiteHelper.COLUMN_PERSONAL_EVALUATION,
-                book.getPersonal_evaluation());
-        values.put(MySQLiteHelper.COLUMN_THUMBNAIL_PATH, book.getThumbnailURL());
-        values.put(MySQLiteHelper.COLUMN_THUMBNAIL_BMP, book.getThumbnail());
+        ContentValues values = getContectValuesFromBook(book);
         long insertId = database.insert(MySQLiteHelper.TABLE_BOOKS, null, values);
     }
 
@@ -134,6 +120,27 @@ public class BookData {
 //
 //    }
 
+    public void updateBook(Book book){
+        ContentValues values = getContectValuesFromBook(book);
+        long insertId = database.update(MySQLiteHelper.TABLE_BOOKS, values, MySQLiteHelper.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(book.getId())});
+    }
+
+    private ContentValues getContectValuesFromBook(Book book){
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_TITLE, book.getTitle());
+        values.put(MySQLiteHelper.COLUMN_AUTHOR, book.getAuthor());
+        values.put(MySQLiteHelper.COLUMN_YEAR, book.getPublishedDate());
+        values.put(MySQLiteHelper.COLUMN_PUBLISHER, book.getPublisher());
+        values.put(MySQLiteHelper.COLUMN_CATEGORY, book.getCategory());
+        values.put(MySQLiteHelper.COLUMN_PERSONAL_EVALUATION,
+                book.getPersonal_evaluation());
+        values.put(MySQLiteHelper.COLUMN_THUMBNAIL_PATH, book.getThumbnailURL());
+        values.put(MySQLiteHelper.COLUMN_THUMBNAIL_BMP, book.getThumbnail());
+        values.put(MySQLiteHelper.COLUMN_READE, book.getReaded());
+        return values;
+    }
+
 
     private Book cursorToBook(Cursor cursor) {
         Book book = new Book(cursor.getString(1),
@@ -143,7 +150,8 @@ public class BookData {
                 cursor.getString(5),
                 cursor.getFloat(6),
                 cursor.getString(7),
-                cursor.getBlob(8)
+                cursor.getBlob(9),
+                cursor.getString(8)
         );
         book.setID(cursor.getLong(0));
         return book;

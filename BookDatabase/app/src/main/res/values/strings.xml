@@ -44,4 +44,13 @@
     <string name="personal_evaluation_hint">personal evaluation</string>
     <string name="category_hint">category</string>
     <string name="category">Category:</string>
+    <string name="search_by">Search by ISBN:</string>
+    <string name="search">Search</string>
+    <string name="sorry_no_books_found">Sorry no books found</string>
+    <string name="forward">Forward</string>
+    <string name="remove_book">Remove Book</string>
+    <string name="book_has_been_marqued_for_removal">Book has been marqued for removal,
+        Proceed to confirm</string>
+    <string name="undo">Undo</string>
+    <string name="rating_updated">Rating Updated</string>
 </resources>

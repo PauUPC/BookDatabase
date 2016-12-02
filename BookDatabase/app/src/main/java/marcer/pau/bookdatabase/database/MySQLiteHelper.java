@@ -17,10 +17,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PERSONAL_EVALUATION = "personal_evaluation";
     public static final String COLUMN_THUMBNAIL_PATH = "thumbnail_path";
     public static final String COLUMN_THUMBNAIL_BMP = "thumbnail_bmp";
+    public static final String COLUMN_READE = "readed";
 
 
     private static final String DATABASE_NAME = "books.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 8;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table " + TABLE_BOOKS + "( "
@@ -32,6 +33,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_CATEGORY + " text not null, "
             + COLUMN_PERSONAL_EVALUATION + " real, "
             + COLUMN_THUMBNAIL_PATH + " text, "
+            + COLUMN_READE + " text, "
             + COLUMN_THUMBNAIL_BMP + " blob "
             + ");";
 

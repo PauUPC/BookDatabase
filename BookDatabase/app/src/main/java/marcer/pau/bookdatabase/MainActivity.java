@@ -2,7 +2,9 @@ package marcer.pau.bookdatabase;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import java.util.ArrayList;
 
+import marcer.pau.bookdatabase.bookView.BookView;
 import marcer.pau.bookdatabase.database.BookData;
 import marcer.pau.bookdatabase.newBook.NewBook;
 import marcer.pau.bookdatabase.newBook.NewBookForm;
@@ -28,15 +31,18 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ArrayList<Book> bookArrayList;
-    private RecyclerView mRecyclerView;
-    private LinearLayoutManager mLinearLayoutManager;
-    private GridLayoutManager mGridLayoutManager;
-    private RecyclerAdapter mAdapter;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private GridLayoutManager gridLayoutManager;
+    private RecyclerAdapter adapter;
     private BookData bookData;
     private SearchView searchView;
-    private handleNewBook handleNewBook;
+    private newBookHandler handleNewBook;
+    private ShowBookHandler showBookHandler;
+    private int lastSwipePosition;
     private final static int CODE_CHILD_NEW = 1;
     private final static int CODE_CHILD_FORM = 2;
+    private final static int CODE_CHILD_VIEW = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,15 +139,39 @@ public class MainActivity extends AppCompatActivity
             Book book = (Book) data.getExtras().getSerializable("BOOK");
             handleNewBook.newBook(book);
         }
+        if (resultCode==RESULT_OK && requestCode == CODE_CHILD_VIEW) {
+            Book book = (Book) data.getExtras().getSerializable("BOOK");
+            byte bytes = (byte) data.getExtras().getSerializable("RESULT_CODE");
+            switch (bytes){
+                case 1:
+                    showBookHandler.updateBookRating(book);
+                    break;
+                case -1:
+                    deleteBook(book);
+                    break;
+            }
+        }
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerView.setLayoutManager(gridLayoutManager);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            recyclerView.setLayoutManager(linearLayoutManager);
+        }
     }
 
     private void createObjects(){
-        handleNewBook = new handleNewBook(this);
+        handleNewBook = new newBookHandler(this);
         bookArrayList = new ArrayList<>();
         bookData = new BookData(this);
         bookData = new BookData(this);
         bookData.open();
         bookArrayList = bookData.getAllBooksQuery();
+        showBookHandler = new ShowBookHandler(this);
     }
 
     private void createMenus(){
@@ -159,40 +189,45 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void createRecyclerview(){
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mLinearLayoutManager = new LinearLayoutManager(this);
-        mGridLayoutManager = new GridLayoutManager(this, 2);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mAdapter = new RecyclerAdapter(bookArrayList);
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        linearLayoutManager = new LinearLayoutManager(this);
+        gridLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        adapter = new RecyclerAdapter(bookArrayList);
+        recyclerView.setAdapter(adapter);
+
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        itemAnimator.setAddDuration(100);
+        itemAnimator.setRemoveDuration(100);
+        recyclerView.setItemAnimator(itemAnimator);
 
         setRecyclerViewScrollListener();
         setRecyclerViewItemTouchListener();
     }
 
-    private int getLastVisibleItemPosition() {
-        int itemCount;
-        if (mRecyclerView.getLayoutManager().equals(mLinearLayoutManager)) {
-            itemCount = mLinearLayoutManager.findLastVisibleItemPosition();
-        } else {
-            itemCount = mGridLayoutManager.findLastVisibleItemPosition();
-        }
-        return itemCount;
-    }
+//    private int getLastVisibleItemPosition() {
+//        int itemCount;
+//        if (recyclerView.getLayoutManager().equals(linearLayoutManager)) {
+//            itemCount = linearLayoutManager.findLastVisibleItemPosition();
+//        } else {
+//            itemCount = gridLayoutManager.findLastVisibleItemPosition();
+//        }
+//        return itemCount;
+//    }
 
     private void setRecyclerViewScrollListener() {
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
+                int totalItemCount = MainActivity.this.recyclerView.getLayoutManager().getItemCount();
                 // TODO getLastVisibleItemPosition()
             }
         });
     }
 
     private void setRecyclerViewItemTouchListener() {
-        ItemTouchHelper.SimpleCallback itemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback itemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder viewHolder1) {
                 return false;
@@ -200,43 +235,64 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                int position = viewHolder.getAdapterPosition();
-                bookArrayList.remove(position);
-                mRecyclerView.getAdapter().notifyItemRemoved(position);
+                Book book;
+                switch (swipeDir) {
+                    case ItemTouchHelper.LEFT:
+                        lastSwipePosition = viewHolder.getAdapterPosition();
+                        book = bookArrayList.get(lastSwipePosition);
+                        showBookHandler.updateReadStatus(book);
+                        recyclerView.getAdapter().notifyItemChanged(lastSwipePosition);
+                        break;
+                    case ItemTouchHelper.RIGHT:
+                        lastSwipePosition = viewHolder.getAdapterPosition();
+                        book = bookArrayList.get(lastSwipePosition);
+                        showBookHandler.showBookDetails(book);
+                        recyclerView.getAdapter().notifyItemChanged(lastSwipePosition);
+                        break;
+                }
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void deleteBook(Book book){
+        book = bookArrayList.get(lastSwipePosition);
+        bookArrayList.remove(lastSwipePosition);
+        recyclerView.getAdapter().notifyItemRemoved(lastSwipePosition);
+        //delete from db
+        bookData.deleteBook(book);
     }
 
     private void changeLayoutManager(MenuItem item) {
-        if (mRecyclerView.getLayoutManager().equals(mLinearLayoutManager)) {
-            mRecyclerView.setLayoutManager(mGridLayoutManager);
+        if (recyclerView.getLayoutManager().equals(linearLayoutManager)) {
+            recyclerView.setLayoutManager(gridLayoutManager);
             if (bookArrayList.size() == 1) {
                 //TODO more book
             }
             item.setIcon(getResources().getDrawable(R.drawable.ic_menu_view_list_black_24dp));
             item.setTitle(R.string.menu_layout_list);
         } else {
-            mRecyclerView.setLayoutManager(mLinearLayoutManager);
+            recyclerView.setLayoutManager(linearLayoutManager);
             item.setIcon(getResources().getDrawable(R.drawable.ic_menu_view_grid_black_24dp));
             item.setTitle(R.string.menu_layout_grid);
         }
     }
 
-//    private void requestPhoto() {
-//        try {
-//            mImageRequester.getPhoto();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private void reloadArrayAdapter(){
+        adapter = new RecyclerAdapter(bookArrayList);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
 
+    private void commitBookUpdate(Book book){
+        bookData.updateBook(book);
+    }
 
-    class handleNewBook {
+    class newBookHandler {
         private Context context;
 
-        handleNewBook(Context context){
+        newBookHandler(Context context){
             this.context = context;
 
         }
@@ -255,9 +311,42 @@ public class MainActivity extends AppCompatActivity
         private void newBook(Book book){
             bookData.createBook(book);
             bookArrayList = bookData.repeatLastQuery();
-            mAdapter.notifyDataSetChanged();
+            reloadArrayAdapter();
         }
+
+
     }
 
+    class ShowBookHandler {
+
+        private Context context;
+
+        public ShowBookHandler(Context context) {
+            this.context = context;
+        }
+
+        public void showBookDetails(Book book){
+            Intent intent = new Intent(context, BookView.class);
+            intent.putExtra("BOOK",book);
+            startActivityForResult(intent, CODE_CHILD_VIEW);
+        }
+
+        private void updateBookRating(Book book){
+                //TODO do something with the rating
+                commitBookUpdate(book);
+        }
+
+        private void updateReadStatus(Book book){
+            switch (book.getReaded()){
+                case "TRUE":
+                    book.setReaded("FALSE");
+                    break;
+                case "FALSE":
+                    book.setReaded("TRUE");
+                    break;
+            }
+            commitBookUpdate(book);
+        }
+    }
     //TODO: Handle user permissions for internet and storage
 }

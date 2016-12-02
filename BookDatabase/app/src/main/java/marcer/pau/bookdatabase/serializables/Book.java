@@ -22,7 +22,7 @@ public class Book implements Serializable {
     private float personal_evaluation;
     private String thumbnailURL;
     private byte[] thumbnail;
-    //private BookImageHandler bookImageHandler;
+    private String readed;
 
     public Book(){
         this.title = "";
@@ -35,8 +35,8 @@ public class Book implements Serializable {
         this.thumbnail = null;
     }
 
-    public Book(String title, String author, String publishedDate, String publisher,
-                String category, float personal_evaluation, String thumbnailURL, byte[] bitmap) {
+    public Book(String title, String author, String publishedDate, String publisher, String category,
+                float personal_evaluation, String thumbnailURL, byte[] bitmap, String readed) {
         this.title = title;
         this.author = author;
         this.publishedDate = publishedDate;
@@ -45,6 +45,7 @@ public class Book implements Serializable {
         this.personal_evaluation = personal_evaluation;
         this.thumbnailURL = thumbnailURL;
         this.thumbnail = bitmap;
+        this.readed = readed;
     }
 
     public Book(JSONObject jsonObject){
@@ -63,6 +64,7 @@ public class Book implements Serializable {
                 this.thumbnailURL = imageLinks.getString("smallThumbnail");
                 this.personal_evaluation = 0;
                 this.publisher = "unknown";
+                this.readed = "FALSE";
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -97,6 +99,10 @@ public class Book implements Serializable {
         return category;
     }
 
+    public void setPersonal_evaluation(float personal_evaluation) {
+        this.personal_evaluation = personal_evaluation;
+    }
+
     public float getPersonal_evaluation() {
         return personal_evaluation;
     }
@@ -111,6 +117,14 @@ public class Book implements Serializable {
 
     public String getThumbnailURL() {
         return thumbnailURL;
+    }
+
+    public String getReaded() {
+        return readed;
+    }
+
+    public void setReaded(String readed) {
+        this.readed = readed;
     }
 
     @Override

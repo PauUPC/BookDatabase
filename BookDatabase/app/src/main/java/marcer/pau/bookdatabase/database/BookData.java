@@ -12,10 +12,11 @@ import marcer.pau.bookdatabase.serializables.Book;
 
 public class BookData {
 
-    private String lastQuery;
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
-    private String[] allColumns = {
+    private String ORDER;
+    private String lastQuery;
+    private static final String[] allColumns = {
             MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_TITLE,
             MySQLiteHelper.COLUMN_AUTHOR,
@@ -31,6 +32,7 @@ public class BookData {
     public BookData(Context context) {
         dbHelper = new MySQLiteHelper(context);
         lastQuery = "TITLE";
+        ORDER = " ASC";
     }
 
     public void open() throws SQLException {
@@ -42,7 +44,7 @@ public class BookData {
     }
 
     public void createBook(Book book) {
-        ContentValues values = getContectValuesFromBook(book);
+        ContentValues values = getContentValuesFromBook(book);
         long insertId = database.insert(MySQLiteHelper.TABLE_BOOKS, null, values);
     }
 
@@ -71,7 +73,7 @@ public class BookData {
     public ArrayList<Book> orderByTitleQuery(){
         ArrayList<Book> books = new ArrayList<>();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
-                allColumns, null, null, null, null, MySQLiteHelper.COLUMN_TITLE+"DESC");
+                allColumns, null, null, null, null, MySQLiteHelper.COLUMN_TITLE + ORDER);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Book book = cursorToBook(cursor);
@@ -87,7 +89,7 @@ public class BookData {
     public ArrayList<Book> orderByCategoryQuery(){
         ArrayList<Book> books = new ArrayList<>();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
-                allColumns, null, null, null, null, MySQLiteHelper.COLUMN_CATEGORY+"DESC");
+                allColumns, null, null, null, null, MySQLiteHelper.COLUMN_CATEGORY + ORDER);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Book book = cursorToBook(cursor);
@@ -121,12 +123,12 @@ public class BookData {
 //    }
 
     public void updateBook(Book book){
-        ContentValues values = getContectValuesFromBook(book);
+        ContentValues values = getContentValuesFromBook(book);
         long insertId = database.update(MySQLiteHelper.TABLE_BOOKS, values, MySQLiteHelper.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(book.getId())});
     }
 
-    private ContentValues getContectValuesFromBook(Book book){
+    private ContentValues getContentValuesFromBook(Book book){
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_TITLE, book.getTitle());
         values.put(MySQLiteHelper.COLUMN_AUTHOR, book.getAuthor());
@@ -155,5 +157,13 @@ public class BookData {
         );
         book.setID(cursor.getLong(0));
         return book;
+    }
+
+    public void setOrderDES(){
+        this.ORDER = " DESC";
+    }
+
+    public void setOrderASC(){
+        this.ORDER = " ASC";
     }
 }

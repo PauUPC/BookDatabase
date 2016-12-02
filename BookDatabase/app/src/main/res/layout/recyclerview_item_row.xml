@@ -13,26 +13,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/viewbook_label"
+            android:layout_weight="0.1">
+
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/recycleritemimg"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:background="@mipmap/ic_no_image_available"
-            android:layout_width="133dp"
-            android:layout_height="136dp" />
+            android:layout_width="121dp"
+            android:layout_height="165dp" />
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/blue"
+            android:weightSum="1">
 
             <TextView
                 android:id="@+id/recycleritemTitle"
                 android:textAppearance="@android:style/TextAppearance.Material.Medium"
                 tools:text="title"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:textStyle="normal|bold"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp" />
@@ -40,7 +51,7 @@
             <TextView
                 android:id="@+id/recycleritemAuthor"
                 tools:text="author"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_marginStart="16dp" />
 
@@ -48,27 +59,32 @@
                 android:id="@+id/recycleritemYear"
                 tools:text="year"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.12"
-            android:id="@+id/viewbook_label">
+            android:background="@color/blue">
 
+            <ImageButton
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@android:drawable/ic_menu_info_details"
+                android:id="@+id/recycleritemPlus"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/blue" />
         </LinearLayout>
 
     </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="8dp"
-        android:layout_weight="1"
         android:layout_margin="8dp" />
 
 </LinearLayout>

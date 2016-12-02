@@ -66,7 +66,7 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     @Override
     public void receivedNewBook(Book book) {
         if(book != null) {
-            if (book.getTitle() == null) {
+            if (book.getTitle().equals("ERROR")) {
                 enableControls();
                 handleBadQuery();
             } else {

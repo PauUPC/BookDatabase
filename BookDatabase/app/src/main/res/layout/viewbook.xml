@@ -21,6 +21,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="60dp"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_delete_black_24dp"
+        android:id="@+id/floatingActionButton2"
+        app:layout_anchorGravity="bottom|left"
+        android:layout_gravity="bottom|right"
+        android:layout_height="60dp" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -47,8 +57,14 @@
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     android:background="@mipmap/ic_no_image_available"
-                    android:layout_width="161dp"
-                    android:layout_height="206dp" />
+                    android:layout_width="150dp"
+                    android:layout_height="220dp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp" />
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -117,9 +133,10 @@
                 android:id="@+id/viewbook_eval"
                 android:rating="0"
                 android:stepSize="1"
-                android:theme="@style/RatingBar"
                 android:numStars="5"
-                android:layout_marginStart="8dp" />
+                android:layout_marginStart="8dp"
+                android:progressTint="@color/duskYellow"
+                android:progressBackgroundTint="@color/lightGrey" />
 
             <Space
                 android:layout_width="match_parent"

@@ -112,6 +112,11 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
             thumbnailURL =  book.getThumbnailURL();
         else
             thumbnailURL = "";
+        byte[] bytes;
+        if(bitmap != null)
+            bytes = serialBitmap.getBytes(bitmap);
+        else
+            bytes= null;
         book = new Book(
                 title.getText().toString(),
                 author.getText().toString(),
@@ -120,7 +125,7 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
                 category.getText().toString(),
                 personal_evaluation.getNumStars(),
                 thumbnailURL,
-                serialBitmap.getBytes(bitmap),
+                bytes,
                 book.getReaded()
                 );
     }

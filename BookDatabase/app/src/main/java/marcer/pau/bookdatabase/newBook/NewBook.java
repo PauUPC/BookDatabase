@@ -31,7 +31,7 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     private BookApiRequester bookApiRequester;
     private Book book;
     byte behaviourAdd;
-    public final static int CODE_CHILD = 10;
+    private final static int CODE_CHILD_FORM = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
             } else {
                 this.book = book;
                 enableControls();
-                finishAndReturn();
+                launchForm();
             }
         } else {
             enableControls();
@@ -84,6 +84,15 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     public void onBackPressed() {
         super.onBackPressed();
         finishAndReturn();
+    }
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK && requestCode == CODE_CHILD_FORM) {
+            this.book = (Book) data.getExtras().getSerializable("BOOK");
+            finishAndReturn();
+        }
     }
 
     private void createToolbar() {
@@ -102,7 +111,7 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
         textView = (TextView) findViewById(R.id.addbook_worngQuery);
     }
 
-    private void createListeners(){
+    private void createListeners() {
         editText.addTextChangedListener(new TextWatcher() {
             boolean finished = false;
             @Override
@@ -168,7 +177,7 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
         editText.setEnabled(false);
     }
 
-    private void enableControls(){
+    private void enableControls() {
         button_submit.setText(R.string.add);
         progressBar.setVisibility(View.INVISIBLE);
         progressBar.setLayoutParams(new LinearLayout.LayoutParams(0,0));
@@ -176,12 +185,12 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
         editText.setEnabled(true);
     }
 
-    private void handleBadQuery(){
+    private void handleBadQuery() {
         //TODO Show Bad Query Feedback
         showError();
     }
 
-    private void finishAndReturn(){
+    private void finishAndReturn() {
         Intent resultIntent = new Intent();
         resultIntent.putExtra("BOOK", book);
         setResult(Activity.RESULT_OK, resultIntent);
@@ -195,5 +204,11 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
 
     private void hideError(){
         textView.setLayoutParams(new LinearLayout.LayoutParams(0,0));
+    }
+
+    private void launchForm(){
+        Intent intent = new Intent(getApplicationContext(), NewBookForm.class);
+        intent.putExtra("BOOK",book);
+        startActivityForResult(intent, CODE_CHILD_FORM);
     }
 }

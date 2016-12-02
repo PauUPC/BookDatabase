@@ -30,7 +30,8 @@
                 android:orientation="horizontal"
                 android:layout_width="29dp"
                 android:layout_height="match_parent"
-                android:id="@+id/viewbook_label">
+                android:id="@+id/viewbook_label"
+                android:background="@android:color/darker_gray">
 
             </LinearLayout>
 

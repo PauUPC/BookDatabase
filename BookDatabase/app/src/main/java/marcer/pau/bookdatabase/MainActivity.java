@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity
     private MenuItem layoutIcon;
     private int lastSwipePosition;
     private final static int CODE_CHILD_NEW = 1;
-    private final static int CODE_CHILD_FORM = 2;
     private final static int CODE_CHILD_VIEW = 3;
 
     @Override
@@ -137,10 +136,6 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode==RESULT_OK && requestCode == CODE_CHILD_NEW) {
-            Book book = (Book) data.getExtras().getSerializable("BOOK");
-            handleNewBook.startNewBookForm(book);
-        }
-        if (resultCode==RESULT_OK && requestCode == CODE_CHILD_FORM) {
             Book book = (Book) data.getExtras().getSerializable("BOOK");
             handleNewBook.newBook(book);
         }
@@ -314,12 +309,6 @@ public class MainActivity extends AppCompatActivity
         private void startNewBook(){
             Intent intent = new Intent(context, NewBook.class);
             startActivityForResult(intent, CODE_CHILD_NEW);
-        }
-
-        private void startNewBookForm(Book book){
-            Intent intent = new Intent(context, NewBookForm.class);
-            intent.putExtra("BOOK",book);
-            startActivityForResult(intent, CODE_CHILD_FORM);
         }
 
         private void newBook(Book book){

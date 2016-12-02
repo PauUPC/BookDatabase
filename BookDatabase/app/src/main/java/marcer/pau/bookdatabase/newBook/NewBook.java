@@ -45,7 +45,7 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.add_book, menu);
+        getMenuInflater().inflate(R.menu.default_menu, menu);
         return true;
     }
 

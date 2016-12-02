@@ -20,18 +20,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
 import java.util.ArrayList;
 
 import marcer.pau.bookdatabase.adapters.RecyclerAdapter;
 import marcer.pau.bookdatabase.bookView.BookView;
 import marcer.pau.bookdatabase.database.BookData;
 import marcer.pau.bookdatabase.newBook.NewBook;
-import marcer.pau.bookdatabase.newBook.NewBookForm;
 import marcer.pau.bookdatabase.serializables.Book;
+import marcer.pau.bookdatabase.async.AsyncDbQuery;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AsyncDbQuery.AsyncDbQueryResponse {
 
     private ArrayList<Book> bookArrayList;
     private RecyclerView recyclerView;
@@ -39,14 +39,15 @@ public class MainActivity extends AppCompatActivity
     private GridLayoutManager gridLayoutManager;
     private RecyclerAdapter adapter;
     private BookData bookData;
-    private SearchView searchView;
     private newBookHandler handleNewBook;
     private ShowBookHandler showBookHandler;
     private MainActivity.OnItemTouchListener onItemTouchListener;
+    private ExtrasHandler extrasHandler;
     private MenuItem layoutIcon;
-    private int lastSwipePosition;
+    private int lastViewPosition;
     private final static int CODE_CHILD_NEW = 1;
     private final static int CODE_CHILD_VIEW = 3;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         createMenus();
         createObjects();
+        createListeners();
         createRecyclerview();
     }
 
@@ -69,26 +71,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-
         final MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
         searchView = (SearchView) myActionMenuItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Toast like print
-                Toast.makeText(getApplicationContext(), "SearchOnQueryTextSubmit: " + query, Toast.LENGTH_SHORT).show();
-                if( ! searchView.isIconified()) {
-                    searchView.setIconified(true);
-                }
-                myActionMenuItem.collapseActionView();
                 return false;
             }
             @Override
-            public boolean onQueryTextChange(String s) {
-                Toast.makeText(getApplicationContext(), "SearchOnQueryTextChanged: " + s, Toast.LENGTH_SHORT).show();
-                return false;
+            public boolean onQueryTextChange(String query) {
+                adapter.filter(query);
+                return true;
             }
         });
         return true;
@@ -173,11 +167,17 @@ public class MainActivity extends AppCompatActivity
         bookArrayList = new ArrayList<>();
         bookData = new BookData(this);
         bookData.open();
+        //TODO asynctask
         bookArrayList = bookData.orderByCategoryQuery();
         showBookHandler = new ShowBookHandler(this);
+        extrasHandler = new ExtrasHandler(this);
+    }
+
+    private void createListeners(){
         onItemTouchListener = new OnItemTouchListener() {
             @Override
             public void onPlusclicked(View view, int position) {
+                lastViewPosition = position;
                 Book book = bookArrayList.get(position);
                 showBookHandler.showBookDetails(book);
                 recyclerView.getAdapter().notifyItemChanged(position);
@@ -239,14 +239,14 @@ public class MainActivity extends AppCompatActivity
                 Book book;
                 switch (swipeDir) {
                     case ItemTouchHelper.LEFT:
-                        lastSwipePosition = viewHolder.getAdapterPosition();
-                        book = bookArrayList.get(lastSwipePosition);
+                        lastViewPosition = viewHolder.getAdapterPosition();
+                        book = bookArrayList.get(lastViewPosition);
                         showBookHandler.updateReadStatus(book);
-                        recyclerView.getAdapter().notifyItemChanged(lastSwipePosition);
+                        recyclerView.getAdapter().notifyItemChanged(lastViewPosition);
                         break;
 //                    case ItemTouchHelper.RIGHT:
-//                        lastSwipePosition = viewHolder.getAdapterPosition();
-//                        book = bookArrayList.get(lastSwipePosition);
+//                        lastViewPosition = viewHolder.getAdapterPosition();
+//                        book = bookArrayList.get(lastViewPosition);
 //                        deleteBook(book);
 //                        break;
                 }
@@ -257,9 +257,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void deleteBook(Book book){
-        book = bookArrayList.get(lastSwipePosition);
-        bookArrayList.remove(lastSwipePosition);
-        recyclerView.getAdapter().notifyItemRemoved(lastSwipePosition);
+        bookArrayList.remove(lastViewPosition);
+        recyclerView.getAdapter().notifyItemRemoved(lastViewPosition);
         //delete from db
         bookData.deleteBook(book);
     }
@@ -298,6 +297,12 @@ public class MainActivity extends AppCompatActivity
         bookData.updateBook(book);
     }
 
+    @Override
+    public void QueryResult(ArrayList<Book> books) {
+        bookArrayList = books;
+        reloadArrayAdapter();
+    }
+
     private class newBookHandler {
         private Context context;
 
@@ -306,12 +311,12 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        private void startNewBook(){
+        void startNewBook(){
             Intent intent = new Intent(context, NewBook.class);
             startActivityForResult(intent, CODE_CHILD_NEW);
         }
 
-        private void newBook(Book book){
+        void newBook(Book book){
             bookData.createBook(book);
             bookArrayList = bookData.repeatLastQuery();
             reloadArrayAdapter();
@@ -334,12 +339,12 @@ public class MainActivity extends AppCompatActivity
             startActivityForResult(intent, CODE_CHILD_VIEW);
         }
 
-        private void updateBookRating(Book book){
+        void updateBookRating(Book book){
                 //TODO do something with the rating
                 commitBookUpdate(book);
         }
 
-        private void updateReadStatus(Book book){
+        void updateReadStatus(Book book){
             switch (book.getReaded()){
                 case "TRUE":
                     book.setReaded("FALSE");
@@ -349,6 +354,23 @@ public class MainActivity extends AppCompatActivity
                     break;
             }
             commitBookUpdate(book);
+        }
+    }
+
+    private class ExtrasHandler {
+
+        private Context context;
+
+        ExtrasHandler(Context context) {
+            this.context = context;
+        }
+
+        void startAbout(){
+
+        }
+
+        void startHelp(){
+
         }
     }
 

@@ -127,8 +127,8 @@ public class BookView extends AppCompatActivity {
 
     private void checkFormForUpdates(){
         if(bytes != -1 ) {
-            if (personal_evaluation.getNumStars() != rating) {
-                book.setPersonal_evaluation(personal_evaluation.getNumStars());
+            if (personal_evaluation.getRating() != rating) {
+                book.setPersonal_evaluation(personal_evaluation.getRating());
                 bytes = 1;
             } else {
                 bytes = 0;

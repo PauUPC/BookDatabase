@@ -19,11 +19,13 @@ import marcer.pau.bookdatabase.serializables.SerialBitmap;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHolder>{
 
     private ArrayList<Book> bookArrayList;
+    private ArrayList<Book> bufferBookArrayList;
     private MainActivity.OnItemTouchListener onItemTouchListener;
 
     public RecyclerAdapter(ArrayList<Book> books, MainActivity.OnItemTouchListener onItemTouchListener) {
         this.onItemTouchListener = onItemTouchListener;
         bookArrayList = books;
+        bufferBookArrayList = new ArrayList<>(bookArrayList);
     }
 
     @Override
@@ -41,6 +43,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
     @Override
     public int getItemCount() {
         return bookArrayList.size();
+    }
+
+    public void filter(String query) {
+        bookArrayList.clear();
+        if(query.isEmpty()){
+            bookArrayList.addAll(bufferBookArrayList);
+        } else{
+            query = query.toLowerCase();
+            for(Book book: bufferBookArrayList){
+                if(book.getTitle().toLowerCase().contains(query)){
+                    bookArrayList.add(book);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    public void restore(){
+        bookArrayList.clear();
+        bookArrayList.addAll(bufferBookArrayList);
+        notifyDataSetChanged();
     }
 
     class BookHolder extends RecyclerView.ViewHolder {

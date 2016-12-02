@@ -123,7 +123,7 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
                 publishedDate.getText().toString(),
                 publisher.getText().toString(),
                 category.getText().toString(),
-                personal_evaluation.getNumStars(),
+                personal_evaluation.getRating(),
                 thumbnailURL,
                 bytes,
                 book.getReaded()

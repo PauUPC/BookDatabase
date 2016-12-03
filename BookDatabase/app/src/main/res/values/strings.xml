@@ -53,4 +53,7 @@
         Proceed to confirm</string>
     <string name="undo">Undo</string>
     <string name="rating_updated">Rating Updated</string>
+    <string name="remove">Remove</string>
+    <string name="remoove_book_question">Do you want to Permanently remove this book?</string>
+    <string name="delete">Delete</string>
 </resources>

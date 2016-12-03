@@ -26,9 +26,9 @@
         android:clickable="true"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_delete_black_24dp"
-        android:id="@+id/floatingActionButton2"
+        android:id="@+id/floatingActionButtonRemoveBook"
         app:layout_anchorGravity="bottom|left"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|end"
         android:layout_height="60dp" />
 
     <RelativeLayout
@@ -60,40 +60,33 @@
                     android:layout_width="150dp"
                     android:layout_height="220dp" />
 
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginRight="8dp" />
-
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:text="@string/Title"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:id="@+id/viewbook_title"
                         android:textAppearance="@android:style/TextAppearance.Material.Medium"
                         android:layout_marginTop="16dp"
-                        android:layout_weight="0.47" />
+                        android:layout_weight="1.59" />
 
                     <TextView
                         android:text="@string/Author"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:id="@+id/viewbook_author"
                         android:textAppearance="@android:style/TextAppearance.Material.Medium"
                         app:layout_row="2"
-                        android:layout_weight="0.77" />
+                        android:layout_weight="1" />
 
                     <TextView
                         android:text="@string/published_date"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:id="@+id/viewbook_pbdate"
                         android:textAppearance="@android:style/TextAppearance.Material.Medium"
                         android:layout_weight="1" />
@@ -101,7 +94,7 @@
                     <TextView
                         android:text="@string/publisher"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:id="@+id/viewbook_publisher"
                         android:textAppearance="@android:style/TextAppearance.Material.Medium"
                         android:layout_weight="1" />
@@ -109,12 +102,18 @@
                     <TextView
                         android:text="@string/category"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:id="@+id/viewbook_category"
                         android:textAppearance="@android:style/TextAppearance.Material.Medium"
                         android:layout_weight="1" />
 
                 </LinearLayout>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp" />
 
             </LinearLayout>
 
@@ -137,29 +136,6 @@
                 android:layout_marginStart="8dp"
                 android:progressTint="@color/duskYellow"
                 android:progressBackgroundTint="@color/lightGrey" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="40dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:id="@+id/viewbook_marked"
-                android:text="@string/book_has_been_marqued_for_removal"
-                android:textColor="@color/red"
-                android:textStyle="normal|italic"
-                android:layout_gravity="top|end"
-                android:textAlignment="viewEnd" />
-
-            <Button
-                android:text="@string/remove_book"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/viewbook_remove"
-                android:layout_gravity="top|end"
-                android:backgroundTint="@color/red" />
 
         </LinearLayout>
 

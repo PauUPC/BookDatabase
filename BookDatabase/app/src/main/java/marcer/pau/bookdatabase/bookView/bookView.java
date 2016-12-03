@@ -1,16 +1,17 @@
 package marcer.pau.bookdatabase.bookView;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,8 +30,7 @@ public class BookView extends AppCompatActivity {
     private TextView publisher;
     private TextView category;
     private RatingBar personal_evaluation;
-    private TextView removal_hint;
-    private Button removeButton;
+    private FloatingActionButton floatingActionButton;
     private Book book;
     private SerialBitmap serialBitmap;
     private float rating;
@@ -91,22 +91,21 @@ public class BookView extends AppCompatActivity {
         personal_evaluation = (RatingBar) findViewById(R.id.viewbook_eval);
         category = (TextView) findViewById(R.id.viewbook_category);
         thumbnail = (ImageView) findViewById(R.id.viewbook_img);
-        removeButton = (Button) findViewById(R.id.viewbook_remove);
-        removal_hint = (TextView) findViewById(R.id.viewbook_marked);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButtonRemoveBook);
     }
 
     private void createListeners(){
-        removeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                handleRemoval();
-
-            }
-        });
         personal_evaluation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(title.getContext(), R.string.rating_updated, Toast.LENGTH_SHORT).show();
+            }
+        });
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog dialog = ConfirmBookRemove();
+                dialog.show();
             }
         });
     }
@@ -145,18 +144,27 @@ public class BookView extends AppCompatActivity {
     }
 
     private void handleRemoval(){
-        switch (bytes){
-            case -1:
-                bytes = 0;
-                removal_hint.setLayoutParams(new LinearLayout.LayoutParams(0,0));
-                removeButton.setText(R.string.remove_book);
-                break;
-            default:
-                bytes = -1;
-                removal_hint.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                removeButton.setText(R.string.undo);
-                break;
-        }
+        bytes = -1;
+        finishAndReturn();
+    }
+
+    private AlertDialog ConfirmBookRemove() {
+        return new AlertDialog.Builder(this)
+                .setTitle(R.string.remove)
+                .setMessage(R.string.remoove_book_question)
+                .setIcon(R.drawable.ic_delete_black_24dp)
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        handleRemoval();
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
     }
 }

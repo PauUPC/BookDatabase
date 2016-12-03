@@ -60,11 +60,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
         notifyDataSetChanged();
     }
 
-    public void restore(){
-        bookArrayList.clear();
-        bookArrayList.addAll(bufferBookArrayList);
-        notifyDataSetChanged();
-    }
+
 
     class BookHolder extends RecyclerView.ViewHolder {
         private SerialBitmap serialBitmap;
@@ -74,7 +70,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
         private TextView year;
         private LinearLayout label;
         private ImageButton plus;
-        int colorID;
+        private int READED;
+        private int UNREADED;
 
         BookHolder(View view) {
             super(view);
@@ -85,7 +82,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
             year = (TextView) view.findViewById(R.id.recycleritemYear);
             label = (LinearLayout) view.findViewById(R.id.viewbook_label);
             plus = (ImageButton) view.findViewById(R.id.recycleritemPlus);
-            colorID = view.getResources().getColor(R.color.darkblue);
+            READED = view.getResources().getColor(R.color.darkblue);
+            UNREADED = view.getResources().getColor(R.color.lightGrey);
 
             plus.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,9 +99,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
             year.setText(book.getPublishedDate());
             if(book.getThumbnail() != null)
                 thumbnail.setImageBitmap(serialBitmap.getBitmap(book.getThumbnail()));
-            if(book.getReaded() != null){
-                if(book.getReaded().equals("TRUE"))
-                    label.setBackgroundColor(colorID);
+            switch (book.getReaded()) {
+                case "TRUE":
+                    label.setBackgroundColor(READED);
+                    break;
+                case "FALSE":
+                    label.setBackgroundColor(UNREADED);
+                    break;
             }
         }
 

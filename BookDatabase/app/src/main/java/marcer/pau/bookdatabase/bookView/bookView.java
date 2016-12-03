@@ -3,6 +3,7 @@ package marcer.pau.bookdatabase.bookView;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -31,12 +32,16 @@ public class BookView extends AppCompatActivity {
     private TextView category;
     private RatingBar personal_evaluation;
     private FloatingActionButton floatingActionButton;
+    private TextView readed;
     private Book book;
     private SerialBitmap serialBitmap;
     private float rating;
+    private String isRead;
     private byte bytes;
     private static final String BOOK_KEY = "BOOK";
     private static final String RESULT_KEY = "RESULT_CODE";
+    private int READED;
+    private int UNREADED;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +97,9 @@ public class BookView extends AppCompatActivity {
         category = (TextView) findViewById(R.id.viewbook_category);
         thumbnail = (ImageView) findViewById(R.id.viewbook_img);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButtonRemoveBook);
+        readed = (TextView) findViewById(R.id.viewbook_read_text);
+        READED = readed.getResources().getColor(R.color.darkblue);
+        UNREADED = readed.getResources().getColor(R.color.lightGrey);
     }
 
     private void createListeners(){
@@ -108,6 +116,23 @@ public class BookView extends AppCompatActivity {
                 dialog.show();
             }
         });
+        readed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (isRead){
+                    case "TRUE":
+                        isRead = "FALSE";
+                        readed.setText(R.string.mark_as_readed);
+                        readed.setBackgroundColor(UNREADED);
+                        break;
+                    case "FALSE":
+                        isRead = "TRUE";
+                        readed.setText(R.string.unread);
+                        readed.setBackgroundColor(READED);
+                        break;
+                }
+            }
+        });
     }
 
     private void populate(){
@@ -121,6 +146,18 @@ public class BookView extends AppCompatActivity {
             category.setText(book.getCategory());
             personal_evaluation.setRating(rating);
             thumbnail.setImageBitmap(serialBitmap.getBitmap(book.getThumbnail()));
+            switch (book.getReaded()) {
+                case "TRUE":
+                    readed.setText(R.string.unread);
+                    readed.setBackgroundColor(READED);
+                    isRead = "TRUE";
+                    break;
+                case "FALSE":
+                    readed.setText(R.string.mark_as_readed);
+                    readed.setBackgroundColor(UNREADED);
+                    isRead = "FALSE";
+                    break;
+            }
         }
     }
 
@@ -129,8 +166,10 @@ public class BookView extends AppCompatActivity {
             if (personal_evaluation.getRating() != rating) {
                 book.setPersonal_evaluation(personal_evaluation.getRating());
                 bytes = 1;
-            } else {
-                bytes = 0;
+            }
+            if (!book.getReaded().equals(isRead)){
+                book.setReaded(isRead);
+                bytes = 1;
             }
         }
     }

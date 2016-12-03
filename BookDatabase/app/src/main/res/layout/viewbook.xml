@@ -113,7 +113,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginRight="8dp" />
+                    android:layout_marginEnd="8dp" />
 
             </LinearLayout>
 
@@ -136,6 +136,22 @@
                 android:layout_marginStart="8dp"
                 android:progressTint="@color/duskYellow"
                 android:progressBackgroundTint="@color/lightGrey" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/viewbook_read_text"
+                    tools:text="mark as readed"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                    android:textSize="18sp"
+                    android:padding="8dp" />
+            </LinearLayout>
 
         </LinearLayout>
 

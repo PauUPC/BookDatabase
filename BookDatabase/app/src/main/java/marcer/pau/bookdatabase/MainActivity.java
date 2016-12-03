@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity
             byte bytes = (byte) data.getExtras().getSerializable("RESULT_CODE");
             switch (bytes){
                 case 1:
-                    showBookHandler.updateBookRating(book);
+                    showBookHandler.updateBook(book);
                     break;
                 case -1:
                     deleteBook(book);
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void createRecyclerview(){
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) findViewById(R.id.content_main);
         linearLayoutManager = new LinearLayoutManager(this);
         gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -278,9 +278,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setRecyclerViewItemTouchListener() {
-        ItemTouchHelper.SimpleCallback itemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        ItemTouchHelper.SimpleCallback itemTouchCallback =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder viewHolder1) {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder viewHolder1) {
                 return false;
             }
 
@@ -292,24 +294,15 @@ public class MainActivity extends AppCompatActivity
                         lastViewPosition = viewHolder.getAdapterPosition();
                         book = bookArrayList.get(lastViewPosition);
                         showBookHandler.updateReadStatus(book);
+                        //swipe back the book do not del!!
                         recyclerView.getAdapter().notifyItemChanged(lastViewPosition);
                         break;
-//                    case ItemTouchHelper.RIGHT:
-//                        lastViewPosition = viewHolder.getAdapterPosition();
-//                        book = bookArrayList.get(lastViewPosition);
-//                        deleteBook(book);
-//                        break;
+
                 }
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-    }
-
-    private void reloadArrayAdapter(){
-        recyclerView.setAdapter(null);
-        adapter = new RecyclerAdapter(bookArrayList, onItemTouchListener);
-        recyclerView.setAdapter(adapter);
     }
 
     private void commitBookUpdate(Book book){
@@ -329,7 +322,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFinishAsyncDbUpdate(ArrayList<Book> books) {
-        updateArrayAdapter(books);
+        //updateArrayAdapter(books);
     }
 
     private void updateArrayAdapter(ArrayList<Book> books){
@@ -354,8 +347,10 @@ public class MainActivity extends AppCompatActivity
             startActivityForResult(intent, CODE_CHILD_VIEW);
         }
 
-        void updateBookRating(Book book){
-                commitBookUpdate(book);
+        void updateBook(Book book){
+            bookArrayList.set(lastViewPosition,book);
+            recyclerView.getAdapter().notifyItemChanged(lastViewPosition,null);
+            commitBookUpdate(book);
         }
 
         void updateReadStatus(Book book){

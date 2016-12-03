@@ -25,7 +25,6 @@
     <string name="menu_help">Help</string>
     <string name="menu_about">About</string>
     <string name="title_activity_main2">Main2Activity</string>
-    <string name="section_format">Hello World from section: %1$d</string>
     <string name="please_provide_the_isbn_code">Please Provide the ISBN code</string>
     <string name="isbn">isbn, only numbers</string>
     <string name="enter_the_book_manually">Enter the book manually</string>
@@ -49,11 +48,13 @@
     <string name="sorry_no_books_found">Sorry no books found</string>
     <string name="forward">Forward</string>
     <string name="remove_book">Remove Book</string>
-    <string name="book_has_been_marqued_for_removal">Book has been marqued for removal,
+    <string name="book_has_been_marqued_for_removal">Book has been marked for removal,
         Proceed to confirm</string>
     <string name="undo">Undo</string>
     <string name="rating_updated">Rating Updated</string>
     <string name="remove">Remove</string>
     <string name="remoove_book_question">Do you want to Permanently remove this book?</string>
     <string name="delete">Delete</string>
+    <string name="unread">Mark as unread</string>
+    <string name="mark_as_readed">Mark as read</string>
 </resources>

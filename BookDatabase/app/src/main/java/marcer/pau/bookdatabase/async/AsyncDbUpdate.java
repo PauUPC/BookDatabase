@@ -24,7 +24,7 @@ public class AsyncDbUpdate extends AsyncTask<Book, Void, ArrayList<Book>> {
     protected ArrayList<Book> doInBackground(Book... books) {
         bookData.open();
         bookData.updateBook(books[0]);
-        return bookData.repeatLastQuery();
+        return null; //bookData.repeatLastQuery(); patch
     }
 
     @Override

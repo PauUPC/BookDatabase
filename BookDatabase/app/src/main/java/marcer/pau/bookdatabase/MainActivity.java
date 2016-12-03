@@ -24,14 +24,20 @@ import android.view.View;
 import java.util.ArrayList;
 
 import marcer.pau.bookdatabase.adapters.RecyclerAdapter;
+import marcer.pau.bookdatabase.async.AsyncDbCreate;
+import marcer.pau.bookdatabase.async.AsyncDbDelete;
+import marcer.pau.bookdatabase.async.AsyncDbQuery;
+import marcer.pau.bookdatabase.async.AsyncDbUpdate;
 import marcer.pau.bookdatabase.bookView.BookView;
 import marcer.pau.bookdatabase.database.BookData;
 import marcer.pau.bookdatabase.newBook.NewBook;
 import marcer.pau.bookdatabase.serializables.Book;
-import marcer.pau.bookdatabase.async.AsyncDbQuery;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AsyncDbQuery.AsyncDbQueryResponse {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        AsyncDbQuery.AsyncDbQueryResponse,
+        AsyncDbCreate.AsyncDbCreateResponse,
+        AsyncDbUpdate.AsyncDbUpdateResponse{
 
     private ArrayList<Book> bookArrayList;
     private RecyclerView recyclerView;
@@ -39,15 +45,18 @@ public class MainActivity extends AppCompatActivity
     private GridLayoutManager gridLayoutManager;
     private RecyclerAdapter adapter;
     private BookData bookData;
-    private newBookHandler handleNewBook;
     private ShowBookHandler showBookHandler;
-    private MainActivity.OnItemTouchListener onItemTouchListener;
     private ExtrasHandler extrasHandler;
+    private MainActivity.OnItemTouchListener onItemTouchListener;
     private MenuItem layoutIcon;
     private int lastViewPosition;
     private final static int CODE_CHILD_NEW = 1;
     private final static int CODE_CHILD_VIEW = 3;
     SearchView searchView;
+    AsyncDbCreate asyncDbCreate;
+    AsyncDbQuery asyncDbQuery;
+    AsyncDbDelete asyncDbDelete;
+    AsyncDbUpdate asyncDbUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,50 +111,24 @@ public class MainActivity extends AppCompatActivity
             changeLayoutManager();
         }
         else if (id == R.id.menu_add_book) {
-            handleNewBook.startNewBook();
+            addNewBook();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void addNewBook(){
+        Intent intent = new Intent(this, NewBook.class);
+        startActivityForResult(intent, CODE_CHILD_NEW);
     }
 
-    @Override
-    protected void onResume() {
-        bookData.open();
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        //bookData.close();
-        super.onPause();
-    }
-
-    @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==RESULT_OK && requestCode == CODE_CHILD_NEW) {
-            Book book = (Book) data.getExtras().getSerializable("BOOK");
-            handleNewBook.newBook(book);
+    private void changeLayoutManager() {
+        if (recyclerView.getLayoutManager().equals(linearLayoutManager)) {
+            setGridLayout();
+        } else {
+            setLinearLayout();
         }
-        if (resultCode==RESULT_OK && requestCode == CODE_CHILD_VIEW) {
-            Book book = (Book) data.getExtras().getSerializable("BOOK");
-            byte bytes = (byte) data.getExtras().getSerializable("RESULT_CODE");
-            switch (bytes){
-                case 1:
-                    showBookHandler.updateBookRating(book);
-                    break;
-                case -1:
-                    deleteBook(book);
-                    break;
-            }
-        }
-
     }
 
     @Override
@@ -162,15 +145,80 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void setGridLayout(){
+        recyclerView.setAdapter(null);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(adapter);
+        layoutIcon.setIcon(R.drawable.ic_menu_view_list_black_24dp);
+        layoutIcon.setTitle(R.string.menu_layout_list);
+    }
+
+    private void setLinearLayout(){
+        recyclerView.setAdapter(null);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
+        layoutIcon.setIcon(R.drawable.ic_menu_view_grid_black_24dp);
+        layoutIcon.setTitle(R.string.menu_layout_grid);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK && requestCode == CODE_CHILD_NEW) {
+            newBook((Book) data.getExtras().getSerializable("BOOK"));
+        }
+        if (resultCode==RESULT_OK && requestCode == CODE_CHILD_VIEW) {
+            Book book = (Book) data.getExtras().getSerializable("BOOK");
+            byte bytes = (byte) data.getExtras().getSerializable("RESULT_CODE");
+            switch (bytes){
+                case 1:
+                    showBookHandler.updateBookRating(book);
+                    break;
+                case -1:
+                    deleteBook(book);
+                    break;
+            }
+        }
+
+    }
+
+    private void newBook(Book book){
+        asyncDbCreate = new AsyncDbCreate(this, bookData);
+        asyncDbCreate.execute(book);
+    }
+
+    private void deleteBook(Book book){
+        bookArrayList.remove(lastViewPosition);
+        recyclerView.getAdapter().notifyItemRemoved(lastViewPosition);
+        asyncDbDelete = new AsyncDbDelete(bookData);
+        asyncDbDelete.execute(book);
+    }
+
     private void createObjects(){
-        handleNewBook = new newBookHandler(this);
-        bookArrayList = new ArrayList<>();
-        bookData = new BookData(this);
-        bookData.open();
-        //TODO asynctask
-        bookArrayList = bookData.orderByCategoryQuery();
+        initializeRecyclerArray();
         showBookHandler = new ShowBookHandler(this);
         extrasHandler = new ExtrasHandler(this);
+    }
+
+    private void initializeRecyclerArray(){
+        bookData = new BookData(this);
+        asyncDbQuery = new AsyncDbQuery(this, bookData);
+        asyncDbQuery.execute("CATEGORY");
     }
 
     private void createListeners(){
@@ -206,8 +254,6 @@ public class MainActivity extends AppCompatActivity
         linearLayoutManager = new LinearLayoutManager(this);
         gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new RecyclerAdapter(bookArrayList,  onItemTouchListener);
-        recyclerView.setAdapter(adapter);
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(100);
@@ -216,6 +262,10 @@ public class MainActivity extends AppCompatActivity
 
         setRecyclerViewScrollListener();
         setRecyclerViewItemTouchListener();
+    }
+
+    public interface OnItemTouchListener {
+        void onPlusclicked(View view, int position);
     }
 
     private void setRecyclerViewScrollListener() {
@@ -256,37 +306,6 @@ public class MainActivity extends AppCompatActivity
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void deleteBook(Book book){
-        bookArrayList.remove(lastViewPosition);
-        recyclerView.getAdapter().notifyItemRemoved(lastViewPosition);
-        //delete from db
-        bookData.deleteBook(book);
-    }
-
-    private void changeLayoutManager() {
-        if (recyclerView.getLayoutManager().equals(linearLayoutManager)) {
-            setGridLayout();
-        } else {
-            setLinearLayout();
-        }
-    }
-
-    private void setGridLayout(){
-        recyclerView.setAdapter(null);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(adapter);
-        layoutIcon.setIcon(R.drawable.ic_menu_view_list_black_24dp);
-        layoutIcon.setTitle(R.string.menu_layout_list);
-    }
-
-    private void setLinearLayout(){
-        recyclerView.setAdapter(null);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
-        layoutIcon.setIcon(R.drawable.ic_menu_view_grid_black_24dp);
-        layoutIcon.setTitle(R.string.menu_layout_grid);
-    }
-
     private void reloadArrayAdapter(){
         recyclerView.setAdapter(null);
         adapter = new RecyclerAdapter(bookArrayList, onItemTouchListener);
@@ -294,35 +313,31 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void commitBookUpdate(Book book){
-        bookData.updateBook(book);
+        asyncDbUpdate = new AsyncDbUpdate(this,bookData);
+        asyncDbUpdate.execute(book);
     }
 
     @Override
-    public void QueryResult(ArrayList<Book> books) {
-        bookArrayList = books;
-        reloadArrayAdapter();
+    public void onFinishAsyncDbQuery(ArrayList<Book> books) {
+        updateArrayAdapter(books);
     }
 
-    private class newBookHandler {
-        private Context context;
+    @Override
+    public void onFinishAsyncDbCreate(ArrayList<Book> books) {
+        updateArrayAdapter(books);
+    }
 
-        newBookHandler(Context context){
-            this.context = context;
+    @Override
+    public void onFinishAsyncDbUpdate(ArrayList<Book> books) {
+        updateArrayAdapter(books);
+    }
 
-        }
-
-        void startNewBook(){
-            Intent intent = new Intent(context, NewBook.class);
-            startActivityForResult(intent, CODE_CHILD_NEW);
-        }
-
-        void newBook(Book book){
-            bookData.createBook(book);
-            bookArrayList = bookData.repeatLastQuery();
-            reloadArrayAdapter();
-        }
-
-
+    private void updateArrayAdapter(ArrayList<Book> books){
+        bookArrayList = null;
+        recyclerView.setAdapter(null);
+        bookArrayList = books;
+        adapter = new RecyclerAdapter(bookArrayList,  onItemTouchListener);
+        recyclerView.setAdapter(adapter);
     }
 
     private class ShowBookHandler {
@@ -340,7 +355,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         void updateBookRating(Book book){
-                //TODO do something with the rating
                 commitBookUpdate(book);
         }
 
@@ -372,10 +386,6 @@ public class MainActivity extends AppCompatActivity
         void startHelp(){
 
         }
-    }
-
-    public interface OnItemTouchListener {
-        void onPlusclicked(View view, int position);
     }
 
     //TODO: Handle user permissions for internet and storage

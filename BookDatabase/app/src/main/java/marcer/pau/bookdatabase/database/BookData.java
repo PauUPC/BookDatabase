@@ -143,7 +143,6 @@ public class BookData {
         return values;
     }
 
-
     private Book cursorToBook(Cursor cursor) {
         Book book = new Book(cursor.getString(1),
                 cursor.getString(2),

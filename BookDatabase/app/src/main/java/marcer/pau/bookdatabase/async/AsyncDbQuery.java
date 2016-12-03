@@ -1,44 +1,49 @@
 package marcer.pau.bookdatabase.async;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 import marcer.pau.bookdatabase.database.BookData;
 import marcer.pau.bookdatabase.serializables.Book;
 
 public class AsyncDbQuery extends AsyncTask<String, Void, ArrayList<Book>> {
-    private AsyncDbQueryResponse asyncDbQueryResponse = null;
+    private AsyncDbQuery.AsyncDbQueryResponse asyncDbQueryResponse = null;
     private BookData bookData;
-    private Context context;
 
     public interface AsyncDbQueryResponse {
-        void QueryResult(ArrayList<Book> books);
+        void onFinishAsyncDbQuery(ArrayList<Book> books);
     }
 
-    public AsyncDbQuery(Activity listeningActivity, Context context) {
-        bookData = new BookData(context);
+    public AsyncDbQuery(Activity listeningActivity, BookData bookData) {
         asyncDbQueryResponse = (AsyncDbQuery.AsyncDbQueryResponse) listeningActivity;
+        this.bookData = bookData;
     }
 
     @Override
     protected ArrayList<Book> doInBackground(String... command) {
         bookData.open();
-        switch (command[0]){
+        switch (command[0]) {
+            case "ALL":
+                return bookData.getAllBooksQuery();
             case "TITLE":
                 return bookData.orderByTitleQuery();
             case "CATEGORY":
                 return bookData.orderByCategoryQuery();
+            case "REPEAT":
+                return bookData.repeatLastQuery();
             default:
-                return bookData.getAllBooksQuery();
+                return null;
         }
     }
 
     @Override
     protected void onPostExecute(ArrayList<Book> books) {
-        super.onPostExecute(books);
         bookData.close();
-        asyncDbQueryResponse.QueryResult(books);
+        asyncDbQueryResponse.onFinishAsyncDbQuery(books);
     }
 }

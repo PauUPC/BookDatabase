@@ -12,10 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import marcer.pau.bookdatabase.R;
 import marcer.pau.bookdatabase.serializables.Book;
@@ -32,7 +34,7 @@ public class BookView extends AppCompatActivity {
     private TextView category;
     private RatingBar personal_evaluation;
     private FloatingActionButton floatingActionButton;
-    private TextView readed;
+    private ToggleButton readed;
     private Book book;
     private SerialBitmap serialBitmap;
     private float rating;
@@ -97,7 +99,7 @@ public class BookView extends AppCompatActivity {
         category = (TextView) findViewById(R.id.viewbook_category);
         thumbnail = (ImageView) findViewById(R.id.viewbook_img);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButtonRemoveBook);
-        readed = (TextView) findViewById(R.id.viewbook_read_text);
+        readed = (ToggleButton) findViewById(R.id.viewbook_read_text);
         READED = readed.getResources().getColor(R.color.darkblue);
         UNREADED = readed.getResources().getColor(R.color.lightGrey);
     }
@@ -116,20 +118,17 @@ public class BookView extends AppCompatActivity {
                 dialog.show();
             }
         });
-        readed.setOnClickListener(new View.OnClickListener() {
+        readed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                switch (isRead){
-                    case "TRUE":
-                        isRead = "FALSE";
-                        readed.setText(R.string.mark_as_readed);
-                        readed.setBackgroundColor(UNREADED);
-                        break;
-                    case "FALSE":
-                        isRead = "TRUE";
-                        readed.setText(R.string.unread);
-                        readed.setBackgroundColor(READED);
-                        break;
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked) {
+                    isRead = "TRUE";
+                    readed.setBackgroundColor(READED);
+
+                }
+                else {
+                    isRead = "FALSE";
+                    readed.setBackgroundColor(UNREADED);
                 }
             }
         });
@@ -148,12 +147,12 @@ public class BookView extends AppCompatActivity {
             thumbnail.setImageBitmap(serialBitmap.getBitmap(book.getThumbnail()));
             switch (book.getReaded()) {
                 case "TRUE":
-                    readed.setText(R.string.unread);
+                    readed.setChecked(true);
                     readed.setBackgroundColor(READED);
                     isRead = "TRUE";
                     break;
                 case "FALSE":
-                    readed.setText(R.string.mark_as_readed);
+                    readed.setChecked(false);
                     readed.setBackgroundColor(UNREADED);
                     isRead = "FALSE";
                     break;

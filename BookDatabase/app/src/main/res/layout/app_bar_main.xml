@@ -23,4 +23,15 @@
 
     <include layout="@layout/content_main" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_menu_add_black_24dp"
+        android:id="@+id/floatingActionButtonAddBook"
+        app:layout_anchorGravity="bottom|left"
+        android:layout_gravity="bottom|end"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:backgroundTint="@android:color/holo_blue_dark" />
+
 </android.support.design.widget.CoordinatorLayout>

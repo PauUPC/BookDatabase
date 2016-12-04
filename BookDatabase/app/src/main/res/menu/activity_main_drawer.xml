@@ -3,11 +3,8 @@
 
     <item android:title="@string/menu_menu">
         <menu>
-        <item android:title="@string/menu_add_book"
-            android:id="@+id/menu_add_book"
-            android:icon="@drawable/ic_menu_add_black_24dp"/>
 
-        <item android:title="@string/menu_filter"
+            <item android:title="@string/menu_filter"
             android:id="@+id/menu_select_filter"
             android:icon="@drawable/ic_menu_filter"/>
 

@@ -88,7 +88,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
             plus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemTouchListener.onPlusclicked(v, getPosition());
+                    onItemTouchListener.onDetailsclicked(v, getPosition());
                 }
             });
         }

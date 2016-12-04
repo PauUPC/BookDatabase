@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,7 +48,8 @@ public class MainActivity extends AppCompatActivity
     private BookData bookData;
     private ShowBookHandler showBookHandler;
     private ExtrasHandler extrasHandler;
-    private MainActivity.OnItemTouchListener onItemTouchListener;
+    private MainActivity.OnItemTouchListener onDetailsTouchListener;
+    private FloatingActionButton floatingActionButtonNewBook;
     private MenuItem layoutIcon;
     private int lastViewPosition;
     private final static int CODE_CHILD_NEW = 1;
@@ -109,9 +111,6 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.menu_change_layout) {
             changeLayoutManager();
-        }
-        else if (id == R.id.menu_add_book) {
-            addNewBook();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -213,6 +212,8 @@ public class MainActivity extends AppCompatActivity
         initializeRecyclerArray();
         showBookHandler = new ShowBookHandler(this);
         extrasHandler = new ExtrasHandler(this);
+        floatingActionButtonNewBook = (FloatingActionButton)
+                findViewById(R.id.floatingActionButtonAddBook);
     }
 
     private void initializeRecyclerArray(){
@@ -222,15 +223,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void createListeners(){
-        onItemTouchListener = new OnItemTouchListener() {
+        onDetailsTouchListener = new OnItemTouchListener() {
             @Override
-            public void onPlusclicked(View view, int position) {
+            public void onDetailsclicked(View view, int position) {
                 lastViewPosition = position;
                 Book book = bookArrayList.get(position);
                 showBookHandler.showBookDetails(book);
                 recyclerView.getAdapter().notifyItemChanged(position);
             }
         };
+        floatingActionButtonNewBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewBook();
+            }
+        });
     }
 
     private void createMenus(){
@@ -265,7 +272,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public interface OnItemTouchListener {
-        void onPlusclicked(View view, int position);
+        void onDetailsclicked(View view, int position);
     }
 
     private void setRecyclerViewScrollListener() {
@@ -329,7 +336,7 @@ public class MainActivity extends AppCompatActivity
         bookArrayList = null;
         recyclerView.setAdapter(null);
         bookArrayList = books;
-        adapter = new RecyclerAdapter(bookArrayList,  onItemTouchListener);
+        adapter = new RecyclerAdapter(bookArrayList, onDetailsTouchListener);
         recyclerView.setAdapter(adapter);
     }
 

@@ -3,7 +3,9 @@ package marcer.pau.bookdatabase.newBook;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import marcer.pau.bookdatabase.api.RequestThumbnail;
 import marcer.pau.bookdatabase.serializables.Book;
@@ -20,7 +23,7 @@ import marcer.pau.bookdatabase.serializables.SerialBitmap;
 
 public class NewBookForm extends AppCompatActivity implements RequestThumbnail.AsyncResponse {
 
-    private Toolbar toolbar;
+    Toolbar toolbar;
     private ImageView thumbnail;
     private EditText title;
     private EditText author;
@@ -57,7 +60,7 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
                 super.onBackPressed();
                 return true;
             case R.id.menuaddform_action_forward:
-                saveBook();
+                extractBookFromForm();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -85,7 +88,6 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
         publisher = (EditText) findViewById(R.id.addbookform_publisher);
         category = (EditText) findViewById(R.id.addbookform_cat);
         personal_evaluation = (RatingBar) findViewById(R.id.addbookform_eval);
-        //TODO: set button listeners
     }
 
     private void populate(){
@@ -100,34 +102,31 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
         }
     }
 
-    private void saveBook(){
-        extractBookFromForm();
-        finishAndReturn();
-    }
-
     private void extractBookFromForm(){
-        //TODO check if book is not full null
-        String thumbnailURL;
-        if(book != null)
-            thumbnailURL =  book.getThumbnailURL();
-        else
-            thumbnailURL = "";
-        byte[] bytes;
-        if(bitmap != null)
-            bytes = serialBitmap.getBytes(bitmap);
-        else
-            bytes= null;
-        book = new Book(
-                title.getText().toString(),
-                author.getText().toString(),
-                publishedDate.getText().toString(),
-                publisher.getText().toString(),
-                category.getText().toString(),
-                personal_evaluation.getRating(),
-                thumbnailURL,
-                bytes,
-                book.getReaded()
-                );
+        if(validate()) {
+            String thumbnailURL;
+            if (book != null)
+                thumbnailURL = book.getThumbnailURL();
+            else
+                thumbnailURL = "";
+            byte[] bytes;
+            if (bitmap != null)
+                bytes = serialBitmap.getBytes(bitmap);
+            else
+                bytes = null;
+            book = new Book(
+                    title.getText().toString(),
+                    author.getText().toString(),
+                    publishedDate.getText().toString(),
+                    publisher.getText().toString(),
+                    category.getText().toString(),
+                    personal_evaluation.getRating(),
+                    thumbnailURL,
+                    bytes,
+                    book.getReaded()
+            );
+            finishAndReturn();
+        }
     }
 
     private void finishAndReturn(){
@@ -140,6 +139,40 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
     private void getBitmapFrmURL(String url) {
         requestThumbnail.execute(url);
     }
+
+    private boolean validate(){
+        boolean eval = true;
+        if(title.getText().toString().equals("")) {
+            title.getBackground().setColorFilter(getResources().getColor(R.color.red),
+                    PorterDuff.Mode.SRC_IN);
+            title.setHintTextColor(getResources().getColor(R.color.red));
+            eval = false;
+        } else {
+            title.getBackground().clearColorFilter();
+        }
+        if(author.getText().toString().equals("")) {
+            author.getBackground().setColorFilter(getResources().getColor(R.color.red),
+                    PorterDuff.Mode.SRC_IN);
+            author.setHintTextColor(getResources().getColor(R.color.red));
+            eval = false;
+        } else {
+            author.getBackground().clearColorFilter();
+        }
+        if(category.getText().toString().equals("")) {
+            category.getBackground().setColorFilter(getResources().getColor(R.color.red),
+                    PorterDuff.Mode.SRC_IN);
+            category.setHintTextColor(getResources().getColor(R.color.red));
+            eval = false;
+        } else {
+            category.getBackground().clearColorFilter();
+        }
+        if(!eval){
+            ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(200);
+            Toast.makeText(getBaseContext(), R.string.missing_fields,Toast.LENGTH_LONG).show();
+        }
+        return eval;
+    }
+
 
     @Override
     public void processFinish(Bitmap image) {

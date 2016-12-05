@@ -21,14 +21,12 @@ public class AsyncDbCreate extends AsyncTask<Book, Void, ArrayList<Book>> {
 
     @Override
     protected ArrayList<Book> doInBackground(Book... books) {
-        bookData.open();
         bookData.createBook(books[0]);
         return bookData.repeatLastQuery();
     }
 
     @Override
     protected void onPostExecute(ArrayList<Book> books) {
-        bookData.close();
         asyncDbCreateResponse.onFinishAsyncDbCreate(books);
     }
 }

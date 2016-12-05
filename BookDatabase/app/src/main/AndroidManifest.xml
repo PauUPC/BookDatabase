@@ -3,6 +3,7 @@
     package="marcer.pau.bookdatabase">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -29,6 +30,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".bookView.BookView"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".extras.Help"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".extras.About"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

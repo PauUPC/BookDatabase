@@ -22,14 +22,12 @@ public class AsyncDbUpdate extends AsyncTask<Book, Void, ArrayList<Book>> {
 
     @Override
     protected ArrayList<Book> doInBackground(Book... books) {
-        bookData.open();
         bookData.updateBook(books[0]);
         return null; //bookData.repeatLastQuery(); patch
     }
 
     @Override
     protected void onPostExecute(ArrayList<Book> books) {
-        bookData.close();
         asyncDbUpdateResponse.onFinishAsyncDbUpdate(books);
     }
 }

@@ -144,7 +144,8 @@ public class BookView extends AppCompatActivity {
             publisher.setText(book.getPublisher());
             category.setText(book.getCategory());
             personal_evaluation.setRating(rating);
-            thumbnail.setImageBitmap(serialBitmap.getBitmap(book.getThumbnail()));
+            if(book.getThumbnail() != null)
+                thumbnail.setImageBitmap(serialBitmap.getBitmap(book.getThumbnail()));
             switch (book.getReaded()) {
                 case "TRUE":
                     readed.setChecked(true);

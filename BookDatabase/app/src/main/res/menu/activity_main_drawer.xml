@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:title="@string/menu_menu">
-        <menu>
-
-            <item android:title="@string/menu_filter"
-            android:id="@+id/menu_select_filter"
-            android:icon="@drawable/ic_menu_filter"/>
-
-        <item android:title="@string/sort_by"
-            android:id="@+id/menu_select_sort"
+    <group android:checkableBehavior="single">
+        <item android:title="@string/title"
+            android:id="@+id/menu_order_title"
             android:icon="@drawable/ic_menu_sort_by"/>
-        </menu>
-    </item>
+
+        <item android:title="@string/author"
+            android:id="@+id/menu_order_author"
+            android:icon="@drawable/ic_menu_sort_by"/>
+
+        <item android:title="@string/category"
+            android:id="@+id/menu_order_category"
+            android:icon="@drawable/ic_menu_sort_by"
+            android:checked="true" />
+    </group>
 
     <item android:title="@string/menu_layout">
         <menu>

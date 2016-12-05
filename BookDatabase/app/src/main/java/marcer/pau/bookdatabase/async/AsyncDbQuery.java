@@ -26,12 +26,13 @@ public class AsyncDbQuery extends AsyncTask<String, Void, ArrayList<Book>> {
 
     @Override
     protected ArrayList<Book> doInBackground(String... command) {
-        bookData.open();
         switch (command[0]) {
             case "ALL":
                 return bookData.getAllBooksQuery();
             case "TITLE":
                 return bookData.orderByTitleQuery();
+            case "AUTHOR":
+                return bookData.orderByAuthorQuery();
             case "CATEGORY":
                 return bookData.orderByCategoryQuery();
             case "REPEAT":
@@ -43,7 +44,6 @@ public class AsyncDbQuery extends AsyncTask<String, Void, ArrayList<Book>> {
 
     @Override
     protected void onPostExecute(ArrayList<Book> books) {
-        bookData.close();
         asyncDbQueryResponse.onFinishAsyncDbQuery(books);
     }
 }

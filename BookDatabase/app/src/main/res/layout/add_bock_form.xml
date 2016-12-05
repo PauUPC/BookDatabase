@@ -46,15 +46,15 @@
                     android:id="@+id/addbookform_img"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
-                    android:background="@mipmap/ic_no_image_available"
+                    android:background="@drawable/ic_book_launcher_black"
                     android:layout_width="150dp"
                     android:layout_height="220dp" />
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp">
 
                     <TextView
                         android:text="@string/Title"
@@ -70,9 +70,7 @@
                         android:inputType="text"
                         android:ems="10"
                         android:id="@+id/addbookform_title"
-                        android:maxLines="1"
-                        android:hint="@string/title_hint"
-                        android:layout_marginBottom="24dp" />
+                        android:hint="@string/title_hint" />
 
                     <TextView
                         android:text="@string/Author"
@@ -88,7 +86,6 @@
                         android:ems="10"
                         android:id="@+id/addbookform_author"
                         android:inputType="text"
-                        android:maxLines="1"
                         android:hint="@string/author_hint" />
 
                 </LinearLayout>
@@ -155,7 +152,7 @@
                 android:layout_marginTop="8dp">
 
                 <TextView
-                    android:text="@string/category"
+                    android:text="@string/Category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView7"

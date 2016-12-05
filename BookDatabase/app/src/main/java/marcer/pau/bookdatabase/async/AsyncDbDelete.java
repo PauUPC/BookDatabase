@@ -12,9 +12,7 @@ public class AsyncDbDelete extends AsyncTask<Book, Void, Void> {
 
     @Override
     protected Void doInBackground(Book... books) {
-        bookData.open();
         bookData.deleteBook(books[0]);
-        bookData.close();
         return null;
     }
 }

@@ -30,7 +30,8 @@
         app:layout_anchorGravity="bottom|left"
         android:layout_gravity="bottom|end"
         android:layout_height="60dp"
-        app:backgroundTint="@android:color/holo_red_light" />
+        app:backgroundTint="@android:color/holo_red_light"
+        android:layout_margin="8dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -53,20 +54,21 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.75">
+                android:layout_weight="0.90">
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/viewbook_img"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:background="@mipmap/ic_no_image_available"
                         android:layout_width="140dp"
-                        android:layout_height="230dp" />
+                        android:layout_height="230dp"
+                        android:background="@drawable/ic_book_launcher_black"
+                        android:scaleType="centerCrop"
+                        android:cropToPadding="false"
+                        android:adjustViewBounds="true" />
 
                     <ToggleButton
                         android:layout_width="match_parent"
@@ -80,7 +82,7 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="340dp"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="8dp">
 
                     <TextView
@@ -128,7 +130,7 @@
                         android:textIsSelectable="true"/>
 
                     <TextView
-                        android:text="@string/category"
+                        android:text="@string/Category"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/textView3"
@@ -141,7 +143,7 @@
                         android:id="@+id/viewbook_category"
                         android:textAppearance="@android:style/TextAppearance.Material.Medium"
                         android:textStyle="normal|bold"
-                        tools:text="@string/category"
+                        tools:text="@string/Category"
                         android:textIsSelectable="true" />
 
                 </LinearLayout>

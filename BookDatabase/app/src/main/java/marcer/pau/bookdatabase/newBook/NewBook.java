@@ -2,6 +2,7 @@ package marcer.pau.bookdatabase.newBook;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import marcer.pau.bookdatabase.serializables.Book;
 import marcer.pau.bookdatabase.api.BookApiRequester;
 import marcer.pau.bookdatabase.R;
+import marcer.pau.bookdatabase.serializables.SerialBitmap;
 
 public class NewBook extends AppCompatActivity implements BookApiRequester.BookApiRequesterResponse {
 
@@ -31,6 +33,7 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     private BookApiRequester bookApiRequester;
     private Book book;
     byte behaviourAdd;
+    private SerialBitmap serialBitmap;
     private final static int CODE_CHILD_FORM = 2;
 
     @Override
@@ -104,6 +107,7 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
 
     private void createObjects() {
         behaviourAdd = 1;
+        serialBitmap = new SerialBitmap();
         editText = (EditText) findViewById(R.id.addbook_input_isbn);
         button_manual = (Button) findViewById(R.id.addbook_input_button_manual);
         button_submit = (Button) findViewById(R.id.addbook_input_button_submit);
@@ -138,7 +142,7 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
             @Override
             public void onClick(View view) {
                 book = new Book();
-                finishAndReturn();
+                launchForm();
             }
         });
 

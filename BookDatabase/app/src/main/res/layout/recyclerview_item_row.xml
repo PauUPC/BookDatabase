@@ -25,11 +25,10 @@
 
         <ImageView
             android:id="@+id/recycleritemimg"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:background="@mipmap/ic_no_image_available"
             android:layout_width="121dp"
-            android:layout_height="165dp" />
+            android:layout_height="165dp"
+            android:cropToPadding="false"
+            android:background="@drawable/gradient_item_row" />
 
         <LinearLayout
             android:orientation="vertical"

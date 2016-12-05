@@ -42,7 +42,7 @@
     <string name="personal_evaluation">Personal Evaluation:</string>
     <string name="personal_evaluation_hint">personal evaluation</string>
     <string name="category_hint">category</string>
-    <string name="category">Category:</string>
+    <string name="Category">Category:</string>
     <string name="search_by">Search by ISBN:</string>
     <string name="search">Search</string>
     <string name="sorry_no_books_found">Sorry no books found</string>
@@ -55,6 +55,14 @@
     <string name="remove">Remove</string>
     <string name="remoove_book_question">Do you want to Permanently remove this book?</string>
     <string name="delete">Delete</string>
-    <string name="unread">Mark as unread</string>
-    <string name="mark_as_readed">Mark as read</string>
+    <string name="unread">Unread</string>
+    <string name="mark_as_readed">Read</string>
+    <string name="title">Title</string>
+    <string name="author">Author</string>
+    <string name="category">Category</string>
+    <string name="about">About</string>
+    <string name="search_by_title">Search by title</string>
+    <string name="search_by_category">Search by category</string>
+    <string name="search_by_author">Search by author</string>
+    <string name="missing_fields">Missing required fields</string>
 </resources>

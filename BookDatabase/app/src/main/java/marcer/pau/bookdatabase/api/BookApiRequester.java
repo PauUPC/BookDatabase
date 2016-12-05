@@ -62,35 +62,3 @@ public class BookApiRequester extends AsyncTask<String, Void, Book> {
         bookApiRequesterResponse.receivedNewBook(book);
     }
 }
-
-//    public BookApiRequester(Activity listeningActivity) {
-//        client = new AsyncHttpClient();
-//        bookApiRequesterResponse = (BookApiRequester.BookApiRequesterResponse) listeningActivity;
-//    }
-//
-//    public boolean isFetchingData() {
-//        return fetching;
-//    }
-//
-//    private String getApiUrl(String isbn) {
-//        return API_BASE_URL + isbn; //API_AUTH;
-//    }
-//
-//    // Method for accessing the search API
-//    public void getBook(final String isbn){
-//        final String query=getApiUrl(isbn);
-//        client.get(query, new JsonHttpResponseHandler(){
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                super.onSuccess(statusCode, headers, response);
-//                Log.d("Json success","succes on json response");
-//                bookApiRequesterResponse.receivedNewBook(new Book(response));
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                super.onFailure(statusCode, headers, responseString, throwable);
-//                bookApiRequesterResponse.receivedNewBook(null);
-//            }
-//        });
-//    }

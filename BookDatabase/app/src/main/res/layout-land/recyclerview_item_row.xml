@@ -39,10 +39,10 @@
                 android:id="@+id/recycleritemimg"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:background="@mipmap/ic_no_image_available"
                 android:layout_width="150dp"
                 android:layout_height="200dp"
-                android:layout_weight="16.09" />
+                android:layout_weight="16.09"
+                android:background="@drawable/gradient_item_row" />
 
             <LinearLayout
                 android:orientation="vertical"

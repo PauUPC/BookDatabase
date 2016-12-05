@@ -64,7 +64,6 @@ public class BookData {
             books.add(book);
             cursor.moveToNext();
         }
-        // make sure to close the cursor
         cursor.close();
         lastQuery = "ALL";
         return books;
@@ -80,9 +79,23 @@ public class BookData {
             books.add(book);
             cursor.moveToNext();
         }
-        // make sure to close the cursor
         cursor.close();
         lastQuery = "TITLE";
+        return books;
+    }
+
+    public ArrayList<Book> orderByAuthorQuery(){
+        ArrayList<Book> books = new ArrayList<>();
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_BOOKS,
+                allColumns, null, null, null, null, MySQLiteHelper.COLUMN_AUTHOR + ORDER);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Book book = cursorToBook(cursor);
+            books.add(book);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        lastQuery = "AUTHOR";
         return books;
     }
 
@@ -96,7 +109,6 @@ public class BookData {
             books.add(book);
             cursor.moveToNext();
         }
-        // make sure to close the cursor
         cursor.close();
         lastQuery = "CATEGORY";
         return books;
@@ -110,17 +122,11 @@ public class BookData {
                 return orderByTitleQuery();
             case "CATEGORY":
                 return orderByCategoryQuery();
+            case "AUTHOR":
+                return orderByAuthorQuery();
         }
         return null;
     }
-
-//    public ArrayList<Book> filterByCategory(String category){
-//
-//    }
-//
-//    public ArrayList<Book> filterByAuthor(String category){
-//
-//    }
 
     public void updateBook(Book book){
         ContentValues values = getContentValuesFromBook(book);

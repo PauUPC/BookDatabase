@@ -8,4 +8,19 @@
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView" />
 
+    <group android:checkableBehavior="single"
+        android:id="@+id/menu_search_group">
+
+        <item android:title="@string/search_by_title"
+            android:checked="true"
+            android:id="@+id/menu_search_title" />
+
+        <item android:title="@string/search_by_author"
+            android:id="@+id/menu_search_author" />
+
+        <item android:title="@string/search_by_category"
+            android:id="@+id/menu_search_category" />
+
+    </group>
+
 </menu>

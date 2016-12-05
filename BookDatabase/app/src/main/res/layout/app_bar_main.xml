@@ -30,8 +30,9 @@
         android:id="@+id/floatingActionButtonAddBook"
         app:layout_anchorGravity="bottom|left"
         android:layout_gravity="bottom|end"
+        app:backgroundTint="@android:color/holo_blue_dark"
+        android:layout_margin="4dp"
         android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:backgroundTint="@android:color/holo_blue_dark" />
+        android:layout_height="60dp" />
 
 </android.support.design.widget.CoordinatorLayout>

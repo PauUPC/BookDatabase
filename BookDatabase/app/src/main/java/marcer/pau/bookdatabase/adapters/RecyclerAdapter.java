@@ -45,17 +45,36 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
         return bookArrayList.size();
     }
 
-    public void filter(String query) {
+    public void filter(String query, String criteria) {
         bookArrayList.clear();
         if(query.isEmpty()){
             bookArrayList.addAll(bufferBookArrayList);
-        } else{
+        } else {
             query = query.toLowerCase();
-            for(Book book: bufferBookArrayList){
-                if(book.getTitle().toLowerCase().contains(query)){
-                    bookArrayList.add(book);
-                }
+            switch (criteria){
+                case "AUTHOR":
+                    for(Book book: bufferBookArrayList){
+                        if(book.getAuthor().toLowerCase().contains(query)){
+                            bookArrayList.add(book);
+                        }
+                    }
+                    break;
+                case "CATEGORY":
+                    for(Book book: bufferBookArrayList){
+                        if(book.getCategory().toLowerCase().contains(query)){
+                            bookArrayList.add(book);
+                        }
+                    }
+                    break;
+                case "TITLE":
+                    for(Book book: bufferBookArrayList){
+                        if(book.getTitle().toLowerCase().contains(query)){
+                            bookArrayList.add(book);
+                        }
+                    }
+                    break;
             }
+
         }
         notifyDataSetChanged();
     }
@@ -99,6 +118,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
             year.setText(book.getPublishedDate());
             if(book.getThumbnail() != null)
                 thumbnail.setImageBitmap(serialBitmap.getBitmap(book.getThumbnail()));
+            else
+                thumbnail.setImageResource(R.drawable.ic_book_launcher_black);
             switch (book.getReaded()) {
                 case "TRUE":
                     label.setBackgroundColor(READED);

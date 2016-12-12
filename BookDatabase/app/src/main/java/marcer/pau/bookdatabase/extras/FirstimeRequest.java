@@ -20,8 +20,10 @@ public class FirstimeRequest extends AppCompatActivity implements
 
     @Override
     public void processFinish(Bitmap image) {
-        book.setThumbnail(serialBitmap.getBytes(image));
-        firstimeRequestResponse.onFinishFirstimeRun(book);
+        if(image != null) {
+            book.setThumbnail(serialBitmap.getBytes(image));
+            firstimeRequestResponse.onFinishFirstimeRun(book);
+        }
     }
 
     public interface FirstimeRequestResponse {

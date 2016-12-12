@@ -33,7 +33,6 @@ import marcer.pau.bookdatabase.bookView.BookView;
 import marcer.pau.bookdatabase.database.BookData;
 import marcer.pau.bookdatabase.extras.About;
 import marcer.pau.bookdatabase.extras.FirstTimeSetup;
-import marcer.pau.bookdatabase.extras.FirstimeRequest;
 import marcer.pau.bookdatabase.extras.Help;
 import marcer.pau.bookdatabase.newBook.NewBook;
 import marcer.pau.bookdatabase.serializables.Book;
@@ -130,9 +129,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         switch (item.getItemId()){
-            case R.id.menu_change_layout:
-                changeLayoutManager();
-                break;
+//            case R.id.menu_change_layout:
+//                changeLayoutManager();
+//                break;
             case R.id.menu_order_author:
                 changeArrayOrder("AUTHOR");
                 break;
@@ -172,11 +171,11 @@ public class MainActivity extends AppCompatActivity
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             gridLayoutManager = new GridLayoutManager(this, 3);
-            layoutIcon.setVisible(false);
+            //layoutIcon.setVisible(false);
             setGridLayout();
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
             gridLayoutManager = new GridLayoutManager(this, 2);
-            layoutIcon.setVisible(true);
+            //layoutIcon.setVisible(true);
             setLinearLayout();
         }
     }
@@ -185,16 +184,16 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(null);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
-        layoutIcon.setIcon(R.drawable.ic_menu_view_list_black_24dp);
-        layoutIcon.setTitle(R.string.menu_layout_list);
+        //layoutIcon.setIcon(R.drawable.ic_menu_view_list_black_24dp);
+        //layoutIcon.setTitle(R.string.menu_layout_list);
     }
 
     private void setLinearLayout(){
         recyclerView.setAdapter(null);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
-        layoutIcon.setIcon(R.drawable.ic_menu_view_grid_black_24dp);
-        layoutIcon.setTitle(R.string.menu_layout_grid);
+        //layoutIcon.setIcon(R.drawable.ic_menu_view_grid_black_24dp);
+        //layoutIcon.setTitle(R.string.menu_layout_grid);
     }
 
     @Override
@@ -205,18 +204,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-//        bookData.open();
         if (sharedPreferences.getBoolean("firstrun", true)) {
             FirstTimeSetup firstTimeSetup = new FirstTimeSetup(this);
             firstTimeSetup.Start();
-            sharedPreferences.edit().putBoolean("firstrun", false).apply();
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        bookData.close();
     }
 
     @Override
@@ -277,6 +273,14 @@ public class MainActivity extends AppCompatActivity
                 showBookHandler.showBookDetails(book);
                 recyclerView.getAdapter().notifyItemChanged(position);
             }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                lastViewPosition = position;
+                Book book = bookArrayList.get(lastViewPosition);
+                showBookHandler.updateReadStatus(book);
+                recyclerView.getAdapter().notifyItemChanged(position);
+            }
         };
         floatingActionButtonNewBook.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -300,7 +304,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(3).setChecked(true);
-        layoutIcon = navigationView.getMenu().findItem(R.id.menu_change_layout);
+        //layoutIcon = navigationView.getMenu().findItem(R.id.menu_change_layout);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -314,9 +318,6 @@ public class MainActivity extends AppCompatActivity
         itemAnimator.setAddDuration(100);
         itemAnimator.setRemoveDuration(100);
         recyclerView.setItemAnimator(itemAnimator);
-
-        setRecyclerViewScrollListener();
-        setRecyclerViewItemTouchListener();
     }
 
     @Override
@@ -325,55 +326,18 @@ public class MainActivity extends AppCompatActivity
             AsyncDbCreate create = new AsyncDbCreate(this,bookData);
             create.execute(book);
         }
+        if(books.size() > 4){
+            sharedPreferences.edit().putBoolean("firstrun", false).apply();
+        }
     }
-
 
     public interface OnItemTouchListener {
         void onDetailsclicked(View view, int position);
-    }
-
-    private void setRecyclerViewScrollListener() {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
-    }
-
-    private void setRecyclerViewItemTouchListener() {
-        ItemTouchHelper.SimpleCallback itemTouchCallback =
-                new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                  RecyclerView.ViewHolder viewHolder1) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                Book book;
-                switch (swipeDir) {
-                    case ItemTouchHelper.LEFT:
-                        lastViewPosition = viewHolder.getAdapterPosition();
-                        book = bookArrayList.get(lastViewPosition);
-                        showBookHandler.updateReadStatus(book);
-                        //swipe back the book do not del!!
-                        recyclerView.getAdapter().notifyItemChanged(lastViewPosition);
-                        break;
-//                    //debug purposes
-//                    case ItemTouchHelper.RIGHT:
-//                        deleteBook(bookArrayList.get(viewHolder.getAdapterPosition()));
-//                        recyclerView.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
-                }
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        void onLongClick(View view, int position);
     }
 
     private void commitBookUpdate(Book book){
-        asyncDbUpdate = new AsyncDbUpdate(this,bookData);
+        asyncDbUpdate = new AsyncDbUpdate(bookData);
         asyncDbUpdate.execute(book);
     }
 

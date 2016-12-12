@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import marcer.pau.bookdatabase.serializables.Book;
 import marcer.pau.bookdatabase.api.BookApiRequester;
@@ -72,6 +73,10 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
             if (book.getTitle().equals("ERROR")) {
                 enableControls();
                 handleBadQuery();
+            } else if (book.getTitle().equals("")) {
+                enableControls();
+                handleBadQuery();
+                Toast.makeText(getBaseContext(), R.string.no_internet,Toast.LENGTH_LONG).show();
             } else {
                 this.book = book;
                 enableControls();

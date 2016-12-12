@@ -173,7 +173,6 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
         return eval;
     }
 
-
     @Override
     public void processFinish(Bitmap image) {
         thumbnail.setImageBitmap(image);

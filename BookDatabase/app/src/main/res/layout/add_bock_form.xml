@@ -104,17 +104,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView6"
-                    android:textAppearance="@android:style/TextAppearance.Material.Medium"
-                    android:layout_weight="1" />
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:id="@+id/addbookform_pubdate"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:layout_weight="1"
                     android:hint="@string/published_date_hint"
                     android:layout_margin="0dp" />
             </LinearLayout>
@@ -130,18 +128,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView8"
-                    android:textAppearance="@android:style/TextAppearance.Material.Medium"
-                    android:layout_weight="1" />
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
                 <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:id="@+id/addbookform_publisher"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:layout_weight="1"
-                    android:hint="@string/publisher_hint" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/addbookform_publisher"
+            android:inputType="text"
+            android:maxLines="1"
+            android:hint="@string/publisher_hint" />
 
             </LinearLayout>
 
@@ -156,17 +152,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView7"
-                    android:textAppearance="@android:style/TextAppearance.Material.Medium"
-                    android:layout_weight="1" />
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:id="@+id/addbookform_cat"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:layout_weight="1"
                     android:hint="@string/category_hint" />
 
             </LinearLayout>

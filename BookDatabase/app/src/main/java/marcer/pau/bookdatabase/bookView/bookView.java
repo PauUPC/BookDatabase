@@ -49,8 +49,8 @@ public class BookView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.viewbook);
-        createToolbar();
         createObjects();
+        createToolbar();
         createListeners();
         populate();
     }
@@ -84,6 +84,7 @@ public class BookView extends AppCompatActivity {
     private void createToolbar() {
         toolbar = (Toolbar) findViewById(R.id.viewbook_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_menuadd_clear_24dp);
+        toolbar.setTitle(book.getTitle());
         setSupportActionBar(toolbar);
     }
 

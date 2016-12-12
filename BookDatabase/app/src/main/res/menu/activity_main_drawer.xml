@@ -15,14 +15,14 @@
             android:checked="true" />
     </group>
 
-    <item android:title="@string/menu_layout">
-        <menu>
-            <item
-                android:id="@+id/menu_change_layout"
-                android:icon="@drawable/ic_menu_view_grid_black_24dp"
-                android:title="@string/menu_layout_grid" />
-        </menu>
-    </item>
+    <!--<item android:title="@string/menu_layout">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/menu_change_layout"-->
+                <!--android:icon="@drawable/ic_menu_view_grid_black_24dp"-->
+                <!--android:title="@string/menu_layout_grid" />-->
+        <!--</menu>-->
+    <!--</item>-->
 
     <item android:title="@string/menu_extras">
         <menu>

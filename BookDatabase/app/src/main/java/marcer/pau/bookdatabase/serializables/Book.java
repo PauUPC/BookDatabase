@@ -13,12 +13,12 @@ import marcer.pau.bookdatabase.R;
 
 public class Book implements Serializable {
     private long id;
-    //TODO id managed by database autoincrement
     private String title;
     private String author;
     private String publishedDate;
     private String publisher;
     private String category;
+    private String isbn;
     private float personal_evaluation;
     private String thumbnailURL;
     private byte[] thumbnail;
@@ -38,12 +38,13 @@ public class Book implements Serializable {
     }
 
     public Book(String title, String author, String publishedDate, String publisher, String category,
-                float personal_evaluation, String thumbnailURL, byte[] bitmap, String readed) {
+                String isbn, float personal_evaluation, String thumbnailURL, byte[] bitmap, String readed) {
         this.title = title;
         this.author = author;
         this.publishedDate = publishedDate;
         this.publisher = publisher;
         this.category = category;
+        this.isbn = isbn;
         this.personal_evaluation = personal_evaluation;
         this.thumbnailURL = thumbnailURL;
         this.thumbnail = bitmap;
@@ -107,6 +108,20 @@ public class Book implements Serializable {
                     this.category = UNKNOWN;
             }
 
+            String isbn_s = null;
+            try {
+                JSONArray isbn = volumeInfo.getJSONArray("industryIdentifiers");
+                JSONObject object = isbn.getJSONObject(0);
+                isbn_s = object.getString("identifier");
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (isbn_s != null)
+                    this.isbn = isbn_s;
+                else
+                    this.isbn = "-";
+            }
+
             String imageLinks_S = null;
             try {
                 JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
@@ -134,6 +149,7 @@ public class Book implements Serializable {
                 this.publishedDate = "";
                 this.publisher = "";
                 this.category = "";
+                this.isbn = "";
                 this.personal_evaluation = 0;
                 this.thumbnailURL = "";
                 this.thumbnail = null;
@@ -168,6 +184,10 @@ public class Book implements Serializable {
 
     public String getCategory() {
         return category;
+    }
+
+    public String getIsbn() {
+        return isbn;
     }
 
     public void setPersonal_evaluation(float personal_evaluation) {

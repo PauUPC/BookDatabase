@@ -1,19 +1,24 @@
 package marcer.pau.bookdatabase.newBook;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import marcer.pau.bookdatabase.api.RequestThumbnail;
 import marcer.pau.bookdatabase.serializables.Book;
@@ -35,7 +40,11 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
     private Bitmap bitmap;
     private RequestThumbnail requestThumbnail;
     private SerialBitmap serialBitmap;
+    private ToggleButton readed;
+    private String isRead;
     private static final String BOOK_KEY = "BOOK";
+    private int READED;
+    private int UNREADED;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +59,13 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.add_book_form, menu);
+        for(int i = 0; i < menu.size(); i++){
+            Drawable drawable = menu.getItem(i).getIcon();
+            if(drawable != null) {
+                drawable.mutate();
+                drawable.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+            }
+        }
         return true;
     }
 
@@ -61,6 +77,9 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
                 return true;
             case R.id.menuaddform_action_forward:
                 extractBookFromForm();
+                return true;
+            case R.id.menuaddform_action_help:
+                showHelp();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -78,9 +97,7 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
         book = (Book) getIntent().getSerializableExtra(BOOK_KEY);
         requestThumbnail = new RequestThumbnail(this);
         serialBitmap = new SerialBitmap();
-    }
 
-    private void createListeners(){
         title = (EditText) findViewById(R.id.addbookform_title);
         author = (EditText) findViewById(R.id.addbookform_author);
         thumbnail =(ImageView) findViewById(R.id.addbookform_img);
@@ -88,6 +105,31 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
         publisher = (EditText) findViewById(R.id.addbookform_publisher);
         category = (EditText) findViewById(R.id.addbookform_cat);
         personal_evaluation = (RatingBar) findViewById(R.id.addbookform_eval);
+
+        readed = (ToggleButton) findViewById(R.id.add_book_form_read);
+        READED = readed.getResources().getColor(R.color.darkblue);
+        UNREADED = readed.getResources().getColor(R.color.lightGrey);
+    }
+
+    private void createListeners(){
+        readed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked) {
+                    isRead = "TRUE";
+                    readed.setBackgroundColor(READED);
+
+                }
+                else {
+                    isRead = "FALSE";
+                    readed.setBackgroundColor(UNREADED);
+                }
+            }
+        });
+
+        readed.setChecked(false);
+        readed.setBackgroundColor(UNREADED);
+        isRead = "FALSE";
     }
 
     private void populate(){
@@ -120,10 +162,11 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
                     publishedDate.getText().toString(),
                     publisher.getText().toString(),
                     category.getText().toString(),
+                    book.getIsbn(),
                     personal_evaluation.getRating(),
                     thumbnailURL,
                     bytes,
-                    book.getReaded()
+                    isRead
             );
             finishAndReturn();
         }
@@ -177,5 +220,23 @@ public class NewBookForm extends AppCompatActivity implements RequestThumbnail.A
     public void processFinish(Bitmap image) {
         thumbnail.setImageBitmap(image);
         this.bitmap = image;
+    }
+
+    private void showHelp() {
+        AlertDialog alertDialog = help();
+        alertDialog.show();
+    }
+
+    private AlertDialog help() {
+        return new AlertDialog.Builder(this)
+                .setTitle(R.string.help)
+                .setMessage(R.string.help_addbookform)
+                .setIcon(R.drawable.ic_menu_help_black_24dp)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
     }
 }

@@ -12,15 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/ic_menu_info_details"
-            android:id="@+id/recycleritemPlus"
-            android:layout_gravity="center"
-            android:visibility="visible"
-            android:background="@android:color/transparent" />
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"

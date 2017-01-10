@@ -80,7 +80,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
     }
 
 
-
     class BookHolder extends RecyclerView.ViewHolder {
         private SerialBitmap serialBitmap;
         private ImageView thumbnail;
@@ -89,7 +88,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
         private TextView year;
         private LinearLayout label;
         private LinearLayout container;
-        private ImageButton plus;
         private int READED;
         private int UNREADED;
 
@@ -102,11 +100,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BookHo
             year = (TextView) view.findViewById(R.id.recycleritemYear);
             label = (LinearLayout) view.findViewById(R.id.viewbook_label);
             container = (LinearLayout) view.findViewById(R.id.recycleritemlayout);
-            plus = (ImageButton) view.findViewById(R.id.recycleritemPlus);
             READED = view.getResources().getColor(R.color.darkblue);
             UNREADED = view.getResources().getColor(R.color.lightGrey);
 
-            plus.setOnClickListener(new View.OnClickListener() {
+            container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     onItemTouchListener.onDetailsclicked(view, getPosition());

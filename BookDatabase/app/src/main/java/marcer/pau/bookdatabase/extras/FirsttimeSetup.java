@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import marcer.pau.bookdatabase.R;
 import marcer.pau.bookdatabase.serializables.Book;
 
 public class FirstTimeSetup extends AppCompatActivity
@@ -42,12 +43,16 @@ public class FirstTimeSetup extends AppCompatActivity
         firstimeRequest5.createBook();
         FirstimeRequest firstimeRequest6 = new FirstimeRequest(this, ISBN6);
         firstimeRequest6.createBook();
+
+
     }
 
     @Override
     public void onFinishFirstimeRun(Book book) {
         books.add(book);
-        if(books.size() == 6)
+        if ((books.size() > 4)) {
             firstTimeSetupResponse.onFinishFirstTimeSetup(books);
+        }
     }
+
 }

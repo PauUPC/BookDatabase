@@ -163,13 +163,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -179,25 +172,32 @@
 
                 <TextView
                     android:text="@string/personal_evaluation"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView9"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium"
                     android:layout_marginTop="16dp"
                     android:layout_marginLeft="0dp"
-                    android:layout_weight="1"
                     android:textAlignment="viewEnd" />
 
                 <RatingBar
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/addbookform_eval"
                     android:rating="0"
                     android:stepSize="1"
                     android:theme="@style/RatingBar"
                     android:numStars="5"
-                    android:layout_marginLeft="0dp"
-                    android:layout_weight="1" />
+                    android:layout_marginLeft="0dp" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/add_book_form_read"
+                    android:textOff="@string/unread"
+                    android:textOn="@string/read"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp" />
 
             </LinearLayout>
 

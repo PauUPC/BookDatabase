@@ -18,6 +18,7 @@
     <item name="lightGrey" type="color">#757575</item>
     <item name="darkGrey" type="color">#424242</item>
     <item name="black" type="color">#000000</item>
+    <item name="white" type="color">#ffffff</item>
 
     <integer-array name="androidcolors">
         <item>@color/blue</item>

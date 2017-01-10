@@ -61,8 +61,7 @@
                     android:hint="@string/isbn"
                     android:maxLines="1"
                     android:maxLength="13"
-                    android:layout_weight="1"
-                    android:text="9788448039806" />
+                    android:layout_weight="1" />
 
                 <Button
                     android:text="@string/search"

@@ -1,9 +1,13 @@
 package marcer.pau.bookdatabase.newBook;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -50,6 +54,13 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.default_menu, menu);
+        for(int i = 0; i < menu.size(); i++){
+            Drawable drawable = menu.getItem(i).getIcon();
+            if(drawable != null) {
+                drawable.mutate();
+                drawable.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+            }
+        }
         return true;
     }
 
@@ -59,9 +70,9 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
             case android.R.id.home:
                 super.onBackPressed();
                 return true;
-//            case R.id.menuadd_action_forward:
-//                finishAndReturn();
-//                return true;
+            case R.id.menuadeff_help:
+                showHelp();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -219,5 +230,23 @@ public class NewBook extends AppCompatActivity implements BookApiRequester.BookA
         Intent intent = new Intent(getApplicationContext(), NewBookForm.class);
         intent.putExtra("BOOK",book);
         startActivityForResult(intent, CODE_CHILD_FORM);
+    }
+
+    private void showHelp() {
+        AlertDialog alertDialog = help();
+        alertDialog.show();
+    }
+
+    private AlertDialog help() {
+        return new AlertDialog.Builder(this)
+                .setTitle(R.string.help)
+                .setMessage(R.string.help_addbook)
+                .setIcon(R.drawable.ic_menu_help_black_24dp)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
     }
 }

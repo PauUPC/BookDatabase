@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -103,6 +105,15 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
+
+        for(int i = 0; i < menu.size(); i++){
+            Drawable drawable = menu.getItem(i).getIcon();
+            if(drawable != null) {
+                drawable.mutate();
+                drawable.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+            }
+        }
+
         return true;
     }
 
@@ -205,8 +216,14 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         if (sharedPreferences.getBoolean("firstrun", true)) {
-            FirstTimeSetup firstTimeSetup = new FirstTimeSetup(this);
-            firstTimeSetup.Start();
+//            FirstTimeSetup firstTimeSetup = new FirstTimeSetup(this);
+//            firstTimeSetup.Start();
+            ArrayList<Book> books = manual();
+            for(Book book:books){
+                AsyncDbCreate create = new AsyncDbCreate(this,bookData);
+                create.execute(book);
+            }
+            sharedPreferences.edit().putBoolean("firstrun", false).apply();
         }
     }
 
@@ -424,6 +441,95 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(context, Help.class);
             startActivity(intent);
         }
+    }
+
+    private ArrayList<Book> manual(){
+        ArrayList<Book> books = new ArrayList<>();
+        books.add(new Book(
+                "Harry Potter and the Philosopher's Stone",
+                "J. K. Rowling",
+                "June 26, 1997",
+                "Unknown",
+                "Fantasy literature",
+                "",
+                3,
+                "",
+                null,
+                "FALSE")
+        );
+        books.add(new Book(
+                "Harry Potter and the Prisoner of Azkaban",
+                "J. K. Rowling",
+                "July 8, 1999",
+                "Unknown",
+                "Fantasy literature",
+                "",
+                3,
+                "",
+                null,
+                "FALSE")
+        );
+        books.add(new Book(
+                "Harry Potter and the Chamber of Secrets",
+                "J. K. Rowling",
+                "July 2, 1998",
+                "Unknown",
+                "Fantasy literature",
+                "",
+                3,
+                "",
+                null,
+                "FALSE")
+        );
+        books.add(new Book(
+                "Harry Potter and the Deathly Hallows",
+                "J. K. Rowling",
+                "July 21, 2007",
+                "Unknown",
+                "Fantasy literature",
+                "",
+                3,
+                "",
+                null,
+                "FALSE")
+        );
+        books.add(new Book(
+                "Metro 2033",
+                "Dmitry Glukhovsky",
+                "2005",
+                "Unknown",
+                "Post-Apocalyptic fiction",
+                "",
+                3,
+                "",
+                null,
+                "FALSE")
+        );
+        books.add(new Book(
+                "Metro 2034",
+                "Dmitry Glukhovsky",
+                "March 16, 2009",
+                "Unknown",
+                "Post-Apocalyptic fiction",
+                "",
+                3,
+                "",
+                null,
+                "FALSE")
+        );
+        books.add(new Book(
+                "Metro 2035",
+                "Dmitry Glukhovsky",
+                "June 12, 2015",
+                "Unknown",
+                "Post-Apocalyptic fiction",
+                "",
+                3,
+                "",
+                null,
+                "FALSE")
+        );
+        return books;
     }
 
     //TODO: Handle user permissions for internet and storage

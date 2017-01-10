@@ -71,13 +71,6 @@
             android:layout_height="match_parent"
             android:background="@drawable/gradient_item_row">
 
-            <ImageButton
-                android:layout_width="45dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@android:drawable/ic_menu_info_details"
-                android:id="@+id/recycleritemPlus"
-                android:layout_gravity="center"
-                android:background="@drawable/gradient_item_row" />
         </LinearLayout>
 
     </LinearLayout>
@@ -86,6 +79,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="8dp"
-        android:layout_margin="8dp" />
+        android:layout_margin="4dp" />
 
 </LinearLayout>

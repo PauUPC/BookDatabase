@@ -31,7 +31,8 @@
         app:backgroundTint="@android:color/holo_red_light"
         android:layout_margin="8dp"
         android:layout_width="50dp"
-        android:layout_height="50dp" />
+        android:layout_height="50dp"
+        android:tint="@color/white" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -46,14 +47,14 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:weightSum="1"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:weightSum="1">
+            android:layout_alignParentStart="true">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="0.90">
 
                 <LinearLayout
@@ -65,18 +66,18 @@
                         android:id="@+id/viewbook_img"
                         android:layout_width="140dp"
                         android:layout_height="230dp"
-                        android:background="@drawable/ic_book_launcher_black"
                         android:scaleType="centerCrop"
                         android:cropToPadding="false"
-                        android:adjustViewBounds="true" />
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/ic_book_launcher_black" />
 
                     <ToggleButton
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/viewbook_read_text"
-                        android:textOn="@string/unread"
-                        android:textOff="@string/mark_as_readed"
-                        android:layout_marginTop="8dp" />
+                        android:textOn="@string/read"
+                        android:layout_marginTop="8dp"
+                        android:textOff="@string/unread" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -133,7 +134,6 @@
                         android:text="@string/Category"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView3"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textStyle="normal|italic" />
 
@@ -145,6 +145,21 @@
                         android:textStyle="normal|bold"
                         tools:text="@string/Category"
                         android:textIsSelectable="true" />
+
+                    <TextView
+                        android:text="Isbn:"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/viewbook_isbn_t" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/viewbook_isbn"
+                        tools:text="@string/isbn"
+                        android:textIsSelectable="true"
+                        android:textAppearance="@android:style/TextAppearance.Material.Small"
+                        android:textStyle="normal|bold" />
 
                 </LinearLayout>
 

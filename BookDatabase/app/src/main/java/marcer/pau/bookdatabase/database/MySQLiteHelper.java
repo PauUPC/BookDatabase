@@ -14,6 +14,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_YEAR = "year";
     public static final String COLUMN_PUBLISHER= "publisher";
     public static final String COLUMN_CATEGORY= "category";
+    public static final String COLUMN_ISBN= "isbn";
     public static final String COLUMN_PERSONAL_EVALUATION = "personal_evaluation";
     public static final String COLUMN_THUMBNAIL_PATH = "thumbnail_path";
     public static final String COLUMN_THUMBNAIL_BMP = "thumbnail_bmp";
@@ -21,7 +22,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "books.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table " + TABLE_BOOKS + "( "
@@ -31,6 +32,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_YEAR + " text, "
             + COLUMN_PUBLISHER + " text not null, "
             + COLUMN_CATEGORY + " text not null, "
+            + COLUMN_ISBN + " text not null, "
             + COLUMN_PERSONAL_EVALUATION + " real, "
             + COLUMN_THUMBNAIL_PATH + " text, "
             + COLUMN_READE + " text, "

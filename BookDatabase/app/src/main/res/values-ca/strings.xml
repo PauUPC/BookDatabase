@@ -1,14 +1,86 @@
 <resources>
-<string name="app_name">BookDatabase</string>
+    <string name="app_name">BookDatabase</string>
 
-<string name="navigation_drawer_open">Open navigation drawer</string>
-<string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
-<string name="action_settings">Settings</string>
+    <string name="action_settings">Opcions</string>
 
-<string name="api_key">GpYj4awfNwkcEm6prgRnho6mE7FqIrXD8uqBbTT0</string>
+    <string name="api_key">GpYj4awfNwkcEm6prgRnho6mE7FqIrXD8uqBbTT0</string>
+    <string name="google_api_key">AIzaSyBckekh07Rt-D_Vpkg3A7E3BJpRoL8-yIs</string>
 
-<string name="title_activity_fullscreen">FullscreenActivity</string>
-<string name="change_layout_manager">Change Layout</string>
-<string name="header_action_search">search</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+
+    <string name="change_layout_manager">Change Layout</string>
+
+    <string name="header_action_search">search</string>
+    <string name="menu_layout">Layout</string>
+    <string name="menu_layout_grid">Grid layout</string>
+    <string name="menu_layout_list">List layout</string>
+    <string name="menu_filter">Filtrar</string>
+    <string name="menu_sort_by">Ordenar per</string>
+    <string name="menu_add_book">Afegir un llibre</string>
+    <string name="menu_menu">Menu</string>
+    <string name="menu_extras">Extres</string>
+    <string name="menu_help">Ajuda</string>
+    <string name="menu_about">"Sobre l’app"</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="please_provide_the_isbn_code">Perfavor introdueix el codi ISBN</string>
+    <string name="isbn">isbn, només nombres</string>
+    <string name="enter_the_book_manually">Entra el llibre de forma manual</string>
+    <string name="or">o</string>
+    <string name="add">Afegeix</string>
+    <string name="cancel">"Cancel·la"</string>
+    <string name="Author">Autor:</string>
+    <string name="Title">Titol:</string>
+    <string name="published_date">Data de publicació:</string>
+    <string name="published_date_hint">data de publicació</string>
+    <string name="author_hint">autor</string>
+    <string name="title_hint">titol</string>
+    <string name="publisher">Editor:</string>
+    <string name="publisher_hint">editor</string>
+    <string name="personal_evaluation">Evaluació personal:</string>
+    <string name="personal_evaluation_hint">evaluació personal</string>
+    <string name="category_hint">categoria</string>
+    <string name="Category">Categoria:</string>
+    <string name="search_by">Busqueda per ISBN:</string>
+    <string name="search">Busqueda</string>
+    <string name="sorry_no_books_found">"Ho sentim no s’ha trobat cap llibre"</string>
+    <string name="forward">Endavant</string>
+    <string name="remove_book">Esborra el llibre</string>
+    <string name="undo">Desfes</string>
+    <string name="rating_updated">Avaluació actualitzada</string>
+    <string name="remove">Esborra</string>
+    <string name="remoove_book_question">Vols esborrar aquest llibre de forma permanent?</string>
+    <string name="delete">Esborrar</string>
+    <string name="unread">No llegit</string>
+    <string name="read">Llegit</string>
+    <string name="title">Titol</string>
+    <string name="author">Autor</string>
+    <string name="category">Categoria</string>
+    <string name="about">"Sobre l’app"</string>
+    <string name="search_by_title">"Busqueda per titol"</string>
+    <string name="search_by_category">"Busqueda per categoria"</string>
+    <string name="search_by_author">"Busqueda per autor"</string>
+    <string name="missing_fields">Falten per omplir camps requerits</string>
+    <string name="no_internet">Perfavor comprova la teva conexió</string>
+    <string name="help">Ajuda</string>
+    <string name="help_bookview">"En aquesta pantalla es pot veure la informació detallada del llibre seleccionat.
+        \n - Prem 'llegit' o 'no llegit' per marcar el llibre en conseqüència.
+        \n - Prem el nombre d'estrelles per establir o modificar la qualificació del llibre.
+        \n - Prem la icona de 'ok', a la part superior dreta de la pantalla, al costat de l'ajuda, per guardar els canvis en el llibre (llegit i qualificació).
+        \n - Prem el botó d'esborrar, part inferior dreta de la pantalla per eliminar el llibre."</string>
+    <string name="help_addbook">"En aquesta pantalla, es pot optar per afegir un nou llibre mitjançant un número d'ISBN o be per entrar els camps manualment.
+        \n - introdueix un ISBN vàlid i prem Afegir per buscar el llibre per ISBN.
+        \n - Prem 'Entra el llibre de forma manual' per procedir a entrar els camps del llibre de forma manual.
+        \n - Recordeu que la recerca d'ISBN és proporcionada per un servei de tercers i pot ser inexacta."</string>
+    <string name="help_addbookform">"En aquesta pantalla es pot veure la informació proporcionada pel nombre ISBN o introduir un nou llibre manualment.
+        \n - Els camps Títol, Autor i categoria son requerits.
+        \n - Prem la icona de 'ok', a la part superior dreta de la pantalla, al costat de l’ajuda, per guardar el nou llibre."</string>
+    <string name="help_help">"A la pantalla principal es pot veure una llista de llibres, per afegir més llibres, prem el botó inferior a la dreta de la pantalla.
+        \n Pots buscar a la llista de llibres amb la icona de cerca a la barra de tasques i triar entre diferents mètodes de cerca al menú que es troba al costat de la cerca.
+        \n Al menú desplegable, es pot triar entre diferents mètodes d’ordre dels llibres per mostrar la llista principal."</string>
+    <string name="about_about">"Aquesta app es per un curs de la UPC (INDI)
+        \n 2016-2017 Pau Marcer
+        \n github: https://github.com/PauUPC/APP-indi"</string>
 </resources>

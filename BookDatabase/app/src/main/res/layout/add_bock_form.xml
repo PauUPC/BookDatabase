@@ -54,7 +54,7 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp">
+                    android:layout_marginStart="8dp">
 
                     <TextView
                         android:text="@string/Title"
@@ -172,18 +172,33 @@
                 android:id="@+id/textView9"
                 android:textAppearance="@android:style/TextAppearance.Material.Medium"
                 android:layout_marginTop="24dp"
-                android:layout_marginLeft="8dp" />
+                android:layout_marginStart="8dp" />
 
-            <RatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/addbookform_eval"
-                android:rating="0"
-                android:stepSize="1"
-                android:numStars="5"
-                android:layout_marginLeft="8dp"
-                android:progressTint="@color/duskYellow"
-                android:progressBackgroundTint="@color/lightGrey"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/addbookform_eval"
+                    android:rating="0"
+                    android:stepSize="1"
+                    android:numStars="5"
+                    android:layout_marginStart="8dp"
+                    android:progressTint="@color/duskYellow"
+                    android:progressBackgroundTint="@color/lightGrey" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/add_book_form_read"
+                    android:layout_weight="1"
+                    android:textOff="@string/unread"
+                    android:textOn="@string/read"
+                    android:layout_marginLeft="8dp" />
+            </LinearLayout>
 
         </LinearLayout>
 

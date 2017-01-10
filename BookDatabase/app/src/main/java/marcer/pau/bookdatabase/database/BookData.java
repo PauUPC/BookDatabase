@@ -23,6 +23,7 @@ public class BookData {
             MySQLiteHelper.COLUMN_YEAR,
             MySQLiteHelper.COLUMN_PUBLISHER,
             MySQLiteHelper.COLUMN_CATEGORY,
+            MySQLiteHelper.COLUMN_ISBN,
             MySQLiteHelper.COLUMN_PERSONAL_EVALUATION,
             MySQLiteHelper.COLUMN_THUMBNAIL_PATH,
             MySQLiteHelper.COLUMN_READE,
@@ -141,6 +142,7 @@ public class BookData {
         values.put(MySQLiteHelper.COLUMN_YEAR, book.getPublishedDate());
         values.put(MySQLiteHelper.COLUMN_PUBLISHER, book.getPublisher());
         values.put(MySQLiteHelper.COLUMN_CATEGORY, book.getCategory());
+        values.put(MySQLiteHelper.COLUMN_ISBN, book.getIsbn());
         values.put(MySQLiteHelper.COLUMN_PERSONAL_EVALUATION,
                 book.getPersonal_evaluation());
         values.put(MySQLiteHelper.COLUMN_THUMBNAIL_PATH, book.getThumbnailURL());
@@ -155,10 +157,11 @@ public class BookData {
                 cursor.getString(3),
                 cursor.getString(4),
                 cursor.getString(5),
-                cursor.getFloat(6),
-                cursor.getString(7),
-                cursor.getBlob(9),
-                cursor.getString(8)
+                cursor.getString(6),
+                cursor.getFloat(7),
+                cursor.getString(8),
+                cursor.getBlob(10),
+                cursor.getString(9)
         );
         book.setID(cursor.getLong(0));
         return book;

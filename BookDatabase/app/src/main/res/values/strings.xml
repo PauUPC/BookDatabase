@@ -48,15 +48,13 @@
     <string name="sorry_no_books_found">Sorry no books found</string>
     <string name="forward">Forward</string>
     <string name="remove_book">Remove Book</string>
-    <string name="book_has_been_marqued_for_removal">Book has been marked for removal,
-        Proceed to confirm</string>
     <string name="undo">Undo</string>
     <string name="rating_updated">Rating Updated</string>
     <string name="remove">Remove</string>
     <string name="remoove_book_question">Do you want to Permanently remove this book?</string>
-    <string name="delete">Delete</string>
+    <string name="delete">Remove</string>
     <string name="unread">Unread</string>
-    <string name="mark_as_readed">Read</string>
+    <string name="read">Read</string>
     <string name="title">Title</string>
     <string name="author">Author</string>
     <string name="category">Category</string>
@@ -66,4 +64,23 @@
     <string name="search_by_author">Search by author</string>
     <string name="missing_fields">Missing required fields</string>
     <string name="no_internet">Please check your internet access</string>
+    <string name="help">Help</string>
+    <string name="help_bookview">"In this screen you can see the detailed information of the selected book.
+        \n - Tap ‘read’ or ‘unread’ to mark the book accordingly.
+        \n - Tap the star rating to set or modify the book rating.
+        \n - Tap the check icon, top right of the screen, near help, to save changes to the book (read status and rating).
+        \n - Tap the delete button, bottom right of the screen to delete the book."</string>
+    <string name="help_addbook">"In this screen you can choose to add a new book by isbn number or to enter the fields manually.
+        \n - Introduce a valid ISBN number and press add to search the book by isbn.
+        \n - Tap enter the book manually to proceed to enter the book fields manually.
+        \n - Note that the isbn search is provided by a 3dr party and can be Inaccurate."</string>
+    <string name="help_addbookform">"In this screen you can see the info provided by the isbn number or enter a new book manually.
+        \n - Title, Author, Category are required fields
+        \n - Tap the check icon, top right of the screen, near help, to save the new book.</string>
+    <string name="help_help">"In the main screen you can see a list of books, to add more books, press the plus button bottom right of the screen.
+        \n You can search the list of books with the search icon in the taskbar and choose between different search methods in the menu behind search.
+        \n On the slide menu, you can choose between tree different order methods to display the main list."</string>
+    <string name="about_about">"this app is for an UPC course (INDI)
+        \n 2016-2017 Pau Marcer
+        \n github: https://github.com/PauUPC/APP-indi"</string>
 </resources>

@@ -1,0 +1,86 @@
+<resources>
+    <string name="app_name">BookDatabase</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Opciones</string>
+
+    <string name="api_key">GpYj4awfNwkcEm6prgRnho6mE7FqIrXD8uqBbTT0</string>
+    <string name="google_api_key">AIzaSyBckekh07Rt-D_Vpkg3A7E3BJpRoL8-yIs</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+
+    <string name="change_layout_manager">Change Layout</string>
+
+    <string name="header_action_search">search</string>
+    <string name="menu_layout">Layout</string>
+    <string name="menu_layout_grid">Grid layout</string>
+    <string name="menu_layout_list">List layout</string>
+    <string name="menu_filter">Filtrar</string>
+    <string name="menu_sort_by">Ordenar por</string>
+    <string name="menu_add_book">Añadir un libro</string>
+    <string name="menu_menu">Menu</string>
+    <string name="menu_extras">Extras</string>
+    <string name="menu_help">Ayuda</string>
+    <string name="menu_about">"Sobre la app"</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="please_provide_the_isbn_code">Porfavor introduce el codigo ISBN</string>
+    <string name="isbn">isbn, solo numeros</string>
+    <string name="enter_the_book_manually">Entra el libro de forma manual</string>
+    <string name="or">o</string>
+    <string name="add">Añadir</string>
+    <string name="cancel">"Cancelar"</string>
+    <string name="Author">Autor:</string>
+    <string name="Title">Titulo:</string>
+    <string name="published_date">Fecha de publicación:</string>
+    <string name="published_date_hint">fecha de publicación</string>
+    <string name="author_hint">autor</string>
+    <string name="title_hint">title</string>
+    <string name="publisher">Editor:</string>
+    <string name="publisher_hint">editor</string>
+    <string name="personal_evaluation">Evaluación personal:</string>
+    <string name="personal_evaluation_hint">evaluación personal</string>
+    <string name="category_hint">categoría</string>
+    <string name="Category">Categoría:</string>
+    <string name="search_by">Busqueda por ISBN:</string>
+    <string name="search">Busqueda</string>
+    <string name="sorry_no_books_found">"Ho sentim no s’ha trobat cap llibre"</string>
+    <string name="forward">Siguiente</string>
+    <string name="remove_book">Borrar el libro</string>
+    <string name="undo">Deshacer</string>
+    <string name="rating_updated">Avaluación actualizada</string>
+    <string name="remove">Borrar</string>
+    <string name="remoove_book_question">Quieres borrar el libro de forma permanente?</string>
+    <string name="delete">Borrar</string>
+    <string name="unread">No leído</string>
+    <string name="read">Leído</string>
+    <string name="title">Titulo</string>
+    <string name="author">Autor</string>
+    <string name="category">Categoría</string>
+    <string name="about">"Sobre la app"</string>
+    <string name="search_by_title">"Busqueda por titulo"</string>
+    <string name="search_by_category">"Busqueda por categoría"</string>
+    <string name="search_by_author">"Busqueda por autor"</string>
+    <string name="missing_fields">Faltan por rellenar algunos de los campos requeridos</string>
+    <string name="no_internet">Perfavor comprueva tu conexión</string>
+    <string name="help">Ayuda</string>
+    <string name="help_bookview">"En esta pantalla se puede ver la información detallada del libro seleccionado.
+        \n - Pulsa 'leydo' o 'no leydo' para marcar el libro en consequència.
+        \n - Pulsa el numero de estrellas para establecer o modificar la cualificación del libro.
+        \n - Pulsa el icono de 'ok', en la parte superior derecha de la pantalla, al lado de ayuda, para guardar los cambios en el libro (leydo y qualificación).
+        \n - Pulsa el boton de borrado, parte inferior drecha de la pantalla pera eliminar el libro."</string>
+    <string name="help_addbook">"En esta pantalla, se puede optar por añadir un nuevo libro mediante un número de ISBN o beien proceder a entrar los campos de forma manual.
+        \n - introdueix un ISBN vàlid i prem Afegir per buscar el llibre per ISBN.
+        \n - Pulsa 'Entra el libro de forma manual' para proceder a entrar los campos del libro de forma manual.
+        \n - Recordar que la busqueda mediante el codigo ISBN esta proporcionada per terceros y puede ser inexacta."</string>
+    <string name="help_addbookform">"En esta pantalla se puede veur la información proporcionada por el numero ISBN o bien introducir un nuevo libro manualment.
+        \n - Los campos Título, Autor i categoría son requeridos.
+        \n - Pulsa el icno de 'ok', en la parte superior drecha de la pantalla, al lado de ayuda, para guardar el nuevo libro"</string>
+    <string name="help_help">"En la pantalla principal se puede ver una lista de libros, para añadir mas libros, pulsa el boton situado abajo a la dreta de la pantalla.
+        \n Puedes buscar en la lista de libros con el icono de busqueda en la barra de tareas y escojer entre diferentes metodos de busqueda en el menú que se encuentra al lado de la busqueda.
+        \n En el menú desplegable, se puede escojer entre diferentes metodos de ordenación de los libros para mostrar en la llista principal."</string>
+    <string name="about_about">"Esta app es para un curso de la UPC (INDI)
+        \n 2016-2017 Pau Marcer
+        \n github: https://github.com/PauUPC/APP-indi"</string>
+</resources>

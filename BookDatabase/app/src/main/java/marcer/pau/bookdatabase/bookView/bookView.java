@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -32,6 +34,8 @@ public class BookView extends AppCompatActivity {
     private TextView publishedDate;
     private TextView publisher;
     private TextView category;
+    private TextView isbn;
+    private TextView isbn_t;
     private RatingBar personal_evaluation;
     private FloatingActionButton floatingActionButton;
     private ToggleButton readed;
@@ -58,6 +62,13 @@ public class BookView extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.viewbook, menu);
+        for(int i = 0; i < menu.size(); i++){
+            Drawable drawable = menu.getItem(i).getIcon();
+            if(drawable != null) {
+                drawable.mutate();
+                drawable.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+            }
+        }
         return true;
     }
 
@@ -70,6 +81,9 @@ public class BookView extends AppCompatActivity {
             case R.id.menuviewform_action_forward:
                 checkFormForUpdates();
                 finishAndReturn();
+                return true;
+            case R.id.menuviewform_action_help:
+                showHelp();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -98,6 +112,8 @@ public class BookView extends AppCompatActivity {
         publisher = (TextView) findViewById(R.id.viewbook_publisher);
         personal_evaluation = (RatingBar) findViewById(R.id.viewbook_eval);
         category = (TextView) findViewById(R.id.viewbook_category);
+        isbn = (TextView) findViewById(R.id.viewbook_isbn);
+        isbn_t = (TextView) findViewById(R.id.viewbook_isbn_t);
         thumbnail = (ImageView) findViewById(R.id.viewbook_img);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButtonRemoveBook);
         readed = (ToggleButton) findViewById(R.id.viewbook_read_text);
@@ -144,6 +160,9 @@ public class BookView extends AppCompatActivity {
             publishedDate.setText(book.getPublishedDate());
             publisher.setText(book.getPublisher());
             category.setText(book.getCategory());
+            isbn.setText(book.getIsbn());
+            if(book.getIsbn().equals(""))
+                isbn_t.setText("");
             personal_evaluation.setRating(rating);
             if(book.getThumbnail() != null)
                 thumbnail.setImageBitmap(serialBitmap.getBitmap(book.getThumbnail()));
@@ -207,4 +226,23 @@ public class BookView extends AppCompatActivity {
                 })
                 .create();
     }
+
+    private void showHelp() {
+        AlertDialog alertDialog = help();
+        alertDialog.show();
+    }
+
+    private AlertDialog help() {
+        return new AlertDialog.Builder(this)
+                .setTitle(R.string.help)
+                .setMessage(R.string.help_bookview)
+                .setIcon(R.drawable.ic_menu_help_black_24dp)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+    }
+
 }

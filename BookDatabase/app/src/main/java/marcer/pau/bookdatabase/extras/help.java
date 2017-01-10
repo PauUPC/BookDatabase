@@ -5,18 +5,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import marcer.pau.bookdatabase.R;
 
 public class Help extends AppCompatActivity {
 
     Toolbar toolbar;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help);
         createToolbar();
+        textView = (TextView) findViewById(R.id.textView_help);
+        textView.setText(R.string.help_help);
     }
 
     @Override
